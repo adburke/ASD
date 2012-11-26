@@ -105,7 +105,7 @@ $('#addItem').on('pageshow', function(){
 });
 
 // Listen for the page change events by the Browse By buttons on index.html
-$(document).bind( "pagebeforechange", function( e, data ) {
+$(document).on( "pagebeforechange", function( e, data ) {
 	// We only want to handle changePage() calls where the caller is
 	// asking us to load a page by URL.
 	if ( typeof data.toPage === "string" ) {
