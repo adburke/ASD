@@ -127,10 +127,10 @@ $(document).bind( "pagebeforechange", function( e, data ) {
 });
 
 var autoFillData = function (){
-	 for(var n in json){
+	for(var n in json){
 		var id = n;
 		localStorage.setItem(id, JSON.stringify(json[n]));
-	};
+	}
 };
 
 //The functions below can go inside or outside the pageinit function for the page in which it is needed.
@@ -156,7 +156,7 @@ var getData = function( urlObj, options ){
 	if (localStorage.length === 1 && localStorage.getItem("jobNumber")){
 		alert("Local Storage does not contain any jobs. Adding job test data.");
 		autoFillData();
-	};
+	}
 	
 	var keyArray = [];
 	for(var i = 0, j = localStorage.length; i < j; i++){
@@ -173,7 +173,7 @@ var getData = function( urlObj, options ){
 					var object = localData[n];
 					//console.log(localData);
 					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
-				};
+				}
 				var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
 				var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
 
@@ -184,14 +184,14 @@ var getData = function( urlObj, options ){
 					var object = localData[n];
 					//console.log(localData);
 					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
-				};
+				}
 				var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
 				var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
 
 				markup += "</ul>" + editLink + deleteLink + "</div>";
 			}
-		};
-	};
+		}
+	}
 	markup +="</div></ul>";
 		// Find the h1 element in our header and inject the name of the category into it.
 	if (categoryName != "displayAll"){
@@ -266,9 +266,9 @@ var storeData = function(key){
 		var num = Number($("#jobnum").val())+1;
 		localStorage["jobNumber"] = num.toString();
 	} else {
-		id = key;
+		var id = key;
 		
-	};
+	}
 	// Get Radio button status
 	// getSelectedRadio();
 	// Get all of the form data and create an object out of it
@@ -292,11 +292,11 @@ var storeData = function(key){
 
 	localStorage.setItem(id, JSON.stringify(jobFormData));
 	if (!key || key === undefined){
-	alert("Job #: " + jobNumCount + " Saved");
+		alert("Job #: " + jobNumCount + " Saved");
 	} else {
 		alert("Job #: " + key + " Saved");
-	};
-	jobCount();	
+	}
+	jobCount();
 	console.log("End storeData");
 };
 
@@ -310,7 +310,7 @@ var	deleteItem = function (){
 		$( "#jobs" ).collapsibleset( "refresh" );
 	} else{
 		alert("Job was NOT deleted.");
-	};
+	}
 };
 
 var editItem = function (){
