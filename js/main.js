@@ -162,32 +162,30 @@ var getData = function( urlObj, options ){
 	for(var i = 0, j = localStorage.length; i < j; i++){
 		if(Number(localStorage.key(i))/1 === Number(localStorage.key(i))){
 			var key = localStorage.key(i);
-			keyArray.push(key);
 			var value = localStorage.getItem(key);
 			var localData = JSON.parse(value);
 			//console.log(localData);
+			var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
+			var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
 			
 			if (categoryName === localData["jobType"][1] ){
+				keyArray.push(key);
 				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
 				for(var n in localData){
 					var object = localData[n];
 					//console.log(localData);
 					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
 				}
-				var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
-				var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
-
 				markup += "</ul>" + editLink + deleteLink + "</div>";
+
 			} else if ( categoryName === "displayAll"){
+				keyArray.push(key);
 				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
 				for(var n in localData){
 					var object = localData[n];
 					//console.log(localData);
 					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
 				}
-				var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
-				var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
-
 				markup += "</ul>" + editLink + deleteLink + "</div>";
 			}
 		}
