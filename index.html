@@ -52,54 +52,30 @@
 				<div id="cta">
 					<a href="#addItem"><img src="images/cta.png" alt="cta"></a>
 				</div>
-				<ul id="browse" data-role="listview" data-inset="true" data-theme="d" data-divider-theme="b" data-filter="true">
+				<ul id="browse" data-role="listview" data-inset="true" data-theme="d" data-divider-theme="b">
 					<li data-role="list-divider">Browse By Job Type:</li>
-					<li id="mainBtn"><a href="#json-items?category=Banner"><h3>Banner</h3></a></li>
-					<li id="mainBtn"><a href="#json-items?category=Decal"><h3>Decal</h3></a></li>
-					<li id="mainBtn"><a href="#json-items?category=Sign"><h3>Sign</h3></a></li>
-					<li id="mainBtn"><a href="#json-items?category=Display"><h3>Display</h3></a></li>
-					<li id="mainBtn"><a href="#json-items?category=Poster"><h3>Poster</h3></a></li>
-					<li id="mainBtn"><a href="#json-items?category=Custom"><h3>Custom</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Banner"><h3>Banner</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Decal"><h3>Decal</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Sign"><h3>Sign</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Display"><h3>Display</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Poster"><h3>Poster</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Custom"><h3>Custom</h3></a></li>
 				</ul>
 			</div><!-- /content -->
 
 			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<li><a href="#json-items?category=displayAll" data-icon="grid">Display JSON</a></li>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
 						<li><a href="#addItem" data-icon="plus">New Job</a></li>
 					</ul>
 				</div>
 			</div><!-- /footer -->
 		</div><!-- home page -->
 
-		<div id="json-items" data-role="page" data-theme="d" data-add-back-btn="true">
-  			<div data-role="header" data-theme="b"><img src="images/cta-small.png" alt="cta">
- 				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>
-  			</div>
-  			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
-				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
-					<li data-role="divider" data-theme="a">Navigation</li>
-					<li><a href="#home">Index</a></li>
-					<li><a href="#addItem">New Job Form</a></li>
-					<li><a href="http://adburke.github.com/MIU-1-Project/Burke_Aaron_Project_4/Gold/">GH-Pages Gold</a></li>
-					<li><a href="http://adburke.github.com/MIU-1-Project/Burke_Aaron_Project_4/Bronze/">GH-Pages Bronze</a></li>
-					<li><a href="#newsFeed">News Feed ex.</a></li>
-					<li><a href="#about">About</a></li>
-				</ul>
-			</div>
-  			<div data-role="content" ></div>
-  			<div data-role="footer" data-theme="a">
-				<div data-role="navbar" data-iconpos="top">
-					<ul>
-						<li><a href="#storage-items?category=displayStorage" data-icon="grid">Display Storage</a></li>
-						<li><a href="#addItem" data-icon="plus">New Job</a></li>
-					</ul>
-				</div>
-			</div><!-- /footer -->
-		</div><!-- json-items page -->
 		<div id="storage-items" data-role="page" data-theme="d" data-add-back-btn="true">
-  			<div data-role="header" data-theme="b"><img src="images/cta-small.png" alt="cta">
+  			<div data-role="header" data-theme="b">
+  				<h1></h1>
  				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>
   			</div>
   			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
@@ -117,67 +93,12 @@
   			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<li><a href="#json-items?category=displayAll" data-icon="grid">Display JSON</a></li>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
 						<li><a href="#addItem" data-icon="plus">New Job</a></li>
 					</ul>
 				</div>
 			</div><!-- /footer -->
 		</div><!-- storage-items page -->
-		<div id="newsFeed" data-role="page" data-theme="d" data-add-back-btn="true">
-  			<div data-role="header" data-theme="b"><img src="images/cta-small.png" alt="cta">
- 				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>
-  			</div>
-  			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
-				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
-					<li data-role="divider" data-theme="a">Navigation</li>
-					<li><a href="#home">Index</a></li>
-					<li><a href="#addItem">New Job Form</a></li>
-					<li><a href="http://adburke.github.com/MIU-1-Project/Burke_Aaron_Project_4/Gold/">GH-Pages Gold</a></li>
-					<li><a href="http://adburke.github.com/MIU-1-Project/Burke_Aaron_Project_4/Bronze/">GH-Pages Bronze</a></li>
-					<li><a href="#newsFeed">News Feed ex.</a></li>
-					<li><a href="#about">About</a></li>
-				</ul>
-			</div>
-			<div id="cta-small">
-					<img src="images/cta-small.png" alt="cta">
-			</div>
-  			<div data-role="content" ></div>
-  				<ul data-role="listview">
-					<li data-role="list-divider">December Jobs</li>
-					<li><a href="#">
-						<h3>Job#: 5000</h3>
-						<p><strong>Banner Job</strong></p>
-						<p>Quantity: 500</p>
-						<p class="ui-li-aside"><strong>Due Date: </br> 2012-12-13</strong></p>
-					</a></li>
-					<li><a href="#">
-						<h3>Job#: 5015</h3>
-						<p><strong>Sign Job</strong></p>
-						<p>Quantity: 50</p>
-						<p class="ui-li-aside"><strong>Due Date: </br> 2012-12-15</strong></p>
-					</a></li>
-					<li><a href="#">
-						<h3>Job#: 5020</h3>
-						<p><strong>Banner Job</strong></p>
-						<p>Quantity: 5</p>
-						<p class="ui-li-aside"><strong>Due Date: </br> 2012-12-15</strong></p>
-					</a></li>
-					<li><a href="#">
-						<h3>Job#: 5005</h3>
-						<p><strong>Display Job</strong></p>
-						<p>Quantity: 50</p>
-						<p class="ui-li-aside"><strong>Due Date: </br> 2012-12-16</strong></p>
-					</a></li>
-				</ul>
-  			<div data-role="footer" data-theme="a">
-				<div data-role="navbar" data-iconpos="top">
-					<ul>
-						<li><a href="#json-items?category=displayAll" data-icon="grid">Display JSON</a></li>
-						<li><a href="#addItem" data-icon="plus">New Job</a></li>
-					</ul>
-				</div>
-			</div><!-- /footer -->
-		</div><!-- category-items page -->
 		<div id="addItem" data-role="page" data-theme="d" data-add-back-btn="true">
 
 			<div data-role="header" data-theme="b" data-position="fixed">
@@ -289,7 +210,7 @@
 			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" id="addItemNav" data-iconpos="top">
 					<ul>
-						<li><a href="#storage-items?category=displayStorage" data-icon="grid">Display Storage</a></li>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
 						<li><a href="#" id="clearData" data-icon="minus">Clear Data</a></li>
 					</ul>
 				</div>
@@ -338,12 +259,11 @@
   			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<li><a href="#json-items?category=displayAll" data-icon="grid">Display JSON</a></li>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
 						<li><a href="#addItem" data-icon="plus">New Job</a></li>
 					</ul>
 				</div>
 			</div>
-
 		</div><!-- about page -->
 
 		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
