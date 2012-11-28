@@ -3,8 +3,34 @@ $('#home').on('pageinit', function(){
 	
 });
 
-$('#json-items').on('pageinit', function(){
-	
+$('#data-items').on('pageinit', function(){
+	$("#json").on('click', function(){
+		console.log("Display json");
+		$.ajax({
+			url: 'xhr/data.json',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r){
+				console.log(r);
+			}
+		});
+		return false;
+	});
+
+	$("#xml").on('click', function(){
+		console.log("Display xml");
+		return false;
+	});
+
+	$("#yaml").on('click', function(){
+		console.log("Display yaml");
+		return false;
+	});
+
+	$("#csv").on('click', function(){
+		console.log("Display csv");
+		return false;
+	});
 });
 $('#storage-items').on('pageinit', function(){
 	
