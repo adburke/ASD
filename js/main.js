@@ -15,11 +15,12 @@ $('#data-items').on('pageinit', function(){
 				$('#dataDisplayList').empty();
 				for(var n in r){
 					var obj = r[n];
-					console.log(obj["Company"]);
 					$(
 						'<li>' + '<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["Need Date"] + '</p>' +
 						'<h3>#: ' + n + '</h3>' +
-						'<p class="ui-li-desc">' + obj["Job Type"] + " Job for " + obj["Company"] +
+						'<p class="ui-li-desc">' + '<strong>' + obj["Job Type"] + " Job for " + obj["Company"] + '</strong>' + '</p>' +
+						'<p class="ui-li-desc">' + "Order Quantity: " + obj["Quantity"] + '</p>' +
+						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["Production Hours"] + "hrs" + '</p>' +
 						'</li>'
 					).appendTo('#dataDisplayList');
 					
