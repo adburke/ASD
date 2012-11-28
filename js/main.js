@@ -12,6 +12,19 @@ $('#data-items').on('pageinit', function(){
 			dataType: 'json',
 			success: function(r){
 				console.log(r);
+				$('#dataDisplayList').empty();
+				for(var n in r){
+					var obj = r[n];
+					console.log(obj["Company"]);
+					$(
+						'<li>' + '<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["Need Date"] + '</p>' +
+						'<h3>#: ' + n + '</h3>' +
+						'<p class="ui-li-desc">' + obj["Job Type"] + " Job for " + obj["Company"] +
+						'</li>'
+					).appendTo('#dataDisplayList');
+					
+				}
+				$('#dataDisplayList').listview('refresh');
 			}
 		});
 		return false;
@@ -19,16 +32,55 @@ $('#data-items').on('pageinit', function(){
 
 	$("#xml").on('click', function(){
 		console.log("Display xml");
+		$.ajax({
+			url: 'xhr/data.json',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r){
+				console.log(r);
+				$('#dataDisplayList').empty();
+				$(
+					
+				).appendTo('#dataDisplayList');
+				$('#dataDisplayList').listview('refresh');
+			}
+		});
 		return false;
 	});
 
 	$("#yaml").on('click', function(){
 		console.log("Display yaml");
+		$.ajax({
+			url: 'xhr/data.json',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r){
+				console.log(r);
+				$('#dataDisplayList').empty();
+				$(
+
+				).appendTo('#dataDisplayList');
+				$('#dataDisplayList').listview('refresh');
+			}
+		});
 		return false;
 	});
 
 	$("#csv").on('click', function(){
 		console.log("Display csv");
+		$.ajax({
+			url: 'xhr/data.json',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r){
+				console.log(r);
+				$('#dataDisplayList').empty();
+				$(
+					
+				).appendTo('#dataDisplayList');
+				$('#dataDisplayList').listview('refresh');
+			}
+		});
 		return false;
 	});
 });
