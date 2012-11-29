@@ -97,8 +97,8 @@ $('#data-items').on('pageinit', function(){
 			dataType: 'text',
 			success: function(r){
 				console.log(r);
-				var csv = $.csv.toObjects(r);
-				console.log(csv[0].constructor);
+				var csv = $.csv.toArray(r);
+				console.log(csv);
 				// $('#dataDisplayList').empty();
 				// $(
 					
@@ -446,4 +446,3 @@ var clearLocal = function(){
 	localStorage.clear();
 	alert("All jobs deleted from local storage.");
 };
-
