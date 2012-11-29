@@ -43,7 +43,7 @@
     <job>
         <number>10005</number>
         <company>XML Tester 6</company>
-        <type>Sign</type>
+        <type>Display</type>
         <due>2012-12-25</due>
         <qty>200</qty>
         <prodhours>10</prodhours>
