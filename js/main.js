@@ -4,6 +4,7 @@ $('#home').on('pageinit', function(){
 });
 
 $('#data-items').on('pageinit', function(){
+	$('#dataDisplayList').empty();
 	$("#json").on('click', function(){
 		console.log("Display json");
 		$.ajax({
@@ -15,14 +16,15 @@ $('#data-items').on('pageinit', function(){
 				$('#dataDisplayList').empty();
 				for(var n in r){
 					var obj = r[n];
-					$(	'<li data-role="list-divider">' + '#: ' + n + '</li>' +
-						'<li>' + '<p class="ui-li-aside ui-li-desc">'+ '<strong>' + "Due: " + obj["Need Date"] + '</strong>' + '</p>' +
+					$(
+						'<li data-role="list-divider">' + '#: ' + n + '</li>' +
+						'<li>' +
+						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["Need Date"] + '</p>' +
 						'<p class="ui-li-desc">' + '<strong>' + obj["Job Type"] + " Job for " + obj["Company"] + '</strong>' + '</p>' +
 						'<p class="ui-li-desc">' + "Order Quantity: " + obj["Quantity"] + '</p>' +
 						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["Production Hours"] + "hrs" + '</p>' +
 						'</li>'
 					).appendTo('#dataDisplayList');
-					
 				}
 				$('#dataDisplayList').listview('refresh');
 			}
@@ -33,15 +35,25 @@ $('#data-items').on('pageinit', function(){
 	$("#xml").on('click', function(){
 		console.log("Display xml");
 		$.ajax({
-			url: 'xhr/data.json',
+			url: 'xhr/data.xml',
 			type: 'GET',
-			dataType: 'json',
+			dataType: 'xml',
 			success: function(r){
-				console.log(r);
 				$('#dataDisplayList').empty();
-				$(
-					
-				).appendTo('#dataDisplayList');
+				var jobs = $( r );
+				jobs.find("job").each(function(){
+					var job = $(this);
+					console.log("Company: ", job.find("number").text());
+					$(
+						'<li data-role="list-divider">' + '#: ' + job.find("number").text() + '</li>' +
+						'<li>' +
+						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + job.find("due").text() + '</p>' +
+						'<p class="ui-li-desc">' + '<strong>' + job.find("type").text() + " Job for " + job.find("company").text() + '</strong>' + '</p>' +
+						'<p class="ui-li-desc">' + "Order Quantity: " + job.find("qty").text() + '</p>' +
+						'<p class="ui-li-desc">' + " Est. Production Time: " + job.find("prodhours").text() + "hrs" + '</p>' +
+						'</li>'
+					).appendTo('#dataDisplayList');
+				});
 				$('#dataDisplayList').listview('refresh');
 			}
 		});
@@ -51,15 +63,26 @@ $('#data-items').on('pageinit', function(){
 	$("#yaml").on('click', function(){
 		console.log("Display yaml");
 		$.ajax({
-			url: 'xhr/data.json',
+			url: 'xhr/data.yml',
 			type: 'GET',
-			dataType: 'json',
+			dataType: 'text',
 			success: function(r){
-				console.log(r);
+				// console.log(r);
+				var yml = jsyaml.load(r);
+				console.log(yml);
 				$('#dataDisplayList').empty();
-				$(
-
-				).appendTo('#dataDisplayList');
+				for(var n in yml){
+					var obj = yml[n];
+					$(
+						'<li data-role="list-divider">' + '#: ' + n + '</li>' +
+						'<li>' +
+						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["due"].getFullYear() + '-' + (obj["due"].getMonth()+1) + '-' + (obj["due"].getDate()+1) + '</p>' +
+						'<p class="ui-li-desc">' + '<strong>' + obj["type"] + " Job for " + obj["company"] + '</strong>' + '</p>' +
+						'<p class="ui-li-desc">' + "Order Quantity: " + obj["qty"] + '</p>' +
+						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["prodhours"] + "hrs" + '</p>' +
+						'</li>'
+					).appendTo('#dataDisplayList');
+				}
 				$('#dataDisplayList').listview('refresh');
 			}
 		});
@@ -69,7 +92,7 @@ $('#data-items').on('pageinit', function(){
 	$("#csv").on('click', function(){
 		console.log("Display csv");
 		$.ajax({
-			url: 'xhr/data.json',
+			url: 'xhr/data.csv',
 			type: 'GET',
 			dataType: 'json',
 			success: function(r){
