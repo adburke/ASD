@@ -94,14 +94,16 @@ $('#data-items').on('pageinit', function(){
 		$.ajax({
 			url: 'xhr/data.csv',
 			type: 'GET',
-			dataType: 'json',
+			dataType: 'text',
 			success: function(r){
 				console.log(r);
-				$('#dataDisplayList').empty();
-				$(
+				var csv = $.csv.toObjects(r);
+				console.log(csv[0].constructor);
+				// $('#dataDisplayList').empty();
+				// $(
 					
-				).appendTo('#dataDisplayList');
-				$('#dataDisplayList').listview('refresh');
+				// ).appendTo('#dataDisplayList');
+				// $('#dataDisplayList').listview('refresh');
 			}
 		});
 		return false;
