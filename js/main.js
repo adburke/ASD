@@ -96,18 +96,18 @@ $('#data-items').on('pageinit', function(){
 			type: 'GET',
 			dataType: 'text',
 			success: function(r){
-				console.log(r);
 				$('#dataDisplayList').empty();
 				var csvObject = csvToObject(r);
+				console.log(csvObject);
 				for(var n in csvObject){
 					var obj = csvObject[n];
 					$(
 						'<li data-role="list-divider">' + '#: ' + n + '</li>' +
 						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["Need Date"] + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + obj["Job Type"] + " Job for " + obj["Company"] + '</strong>' + '</p>' +
-						'<p class="ui-li-desc">' + "Order Quantity: " + obj["Quantity"] + '</p>' +
-						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["Production Hours"] + "hrs" + '</p>' +
+						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["due"] + '</p>' +
+						'<p class="ui-li-desc">' + '<strong>' + obj["type"] + " Job for " + obj["company"] + '</strong>' + '</p>' +
+						'<p class="ui-li-desc">' + "Order Quantity: " + obj["qty"] + '</p>' +
+						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["prodhours"] + "hrs" + '</p>' +
 						'</li>'
 					).appendTo('#dataDisplayList');
 				}
@@ -461,35 +461,35 @@ var csvToObject = function(data){
 		var values = [];
 
 		var rows = data.split('\r');
-		console.log(rows);
+		// console.log(rows);
 
 		var keys = rows[0].split(';');
-		console.log(keys);
+		// console.log(keys);
 
-		for(var i=1, j=rows.length; i<j;i++){
-			values.push(rows[i].split(';'));
+		for(var l=1, m=rows.length; l<m;l++){
+			values.push(rows[l].split(';'));
 		}
-		console.log(values);
+		// console.log(values);
 
-		re = /\,(\w|)\w/ // Test for , separator for sub array
+		re = /\,(\w|\w)/; // Test for , separator for sub array
 		for(var i=0, j=values.length; i<j;i++){
-			console.log(values[i]);
-			var newObj = new Object();
+			// console.log(values[i]);
+			var newObj = {};
 			for(var k=0, l=values[i].length; k<l; k++){
 				// console.log(values[i][k]);
 				if(re.test(values[i][k]) ){
-					console.log(values[i][k] + ' : ' + re.test(values[i][k]));
+					// console.log(values[i][k] + ' : ' + re.test(values[i][k]));
 					var subArr = values[i][k].split(',');
-					console.log(subArr)
+					// console.log(subArr);
 					values[i][k] = subArr;
-					console.log(values[i]);
+					// console.log(values[i]);
 				}
 				newObj[keys[k]] = values[i][k];
 			}
 			var key = values[i][0];
 			obj[key] = newObj;
 		}
-		console.log(values);
-		console.log(obj);
+		// console.log(values);
+		// console.log(obj);
 		return obj;
 };
