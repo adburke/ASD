@@ -41,9 +41,10 @@ $('#data-items').on('pageinit', function(){
 			success: function(r){
 				$('#dataDisplayList').empty();
 				var jobs = $( r );
+				console.log(r);
 				jobs.find("job").each(function(){
 					var job = $(this);
-					console.log("Company: ", job.find("number").text());
+					// console.log("Company: ", job.find("number").text());
 					$(
 						'<li data-role="list-divider">' + '#: ' + job.find("number").text() + '</li>' +
 						'<li>' +
