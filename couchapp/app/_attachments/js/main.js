@@ -3,124 +3,10 @@ $('#home').on('pageinit', function(){
 	
 });
 
-$('#data-items').on('pageinit', function(){
-	$('#dataDisplayList').empty();
-	$("#json").on('click', function(){
-		console.log("Display json");
-		$.ajax({
-			url: 'xhr/data.json',
-			type: 'GET',
-			dataType: 'json',
-			success: function(r){
-				console.log(r);
-				$('#dataDisplayList').empty();
-				for(var n in r){
-					var obj = r[n];
-					$(
-						'<li data-role="list-divider">' + '#: ' + n + '</li>' +
-						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["Need Date"] + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + obj["Job Type"] + " Job for " + obj["Company"] + '</strong>' + '</p>' +
-						'<p class="ui-li-desc">' + "Order Quantity: " + obj["Quantity"] + '</p>' +
-						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["Production Hours"] + "hrs" + '</p>' +
-						'</li>'
-					).appendTo('#dataDisplayList');
-				}
-				$('#dataDisplayList').listview('refresh');
-			}
-		});
-		return false;
-	});
-
-	$("#xml").on('click', function(){
-		console.log("Display xml");
-		$.ajax({
-			url: 'xhr/data.xml',
-			type: 'GET',
-			dataType: 'xml',
-			success: function(r){
-				$('#dataDisplayList').empty();
-				var jobs = $( r );
-				console.log(r);
-				jobs.find("job").each(function(){
-					var job = $(this);
-					// console.log("Company: ", job.find("number").text());
-					$(
-						'<li data-role="list-divider">' + '#: ' + job.find("number").text() + '</li>' +
-						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + job.find("due").text() + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + job.find("type").text() + " Job for " + job.find("company").text() + '</strong>' + '</p>' +
-						'<p class="ui-li-desc">' + "Order Quantity: " + job.find("qty").text() + '</p>' +
-						'<p class="ui-li-desc">' + " Est. Production Time: " + job.find("prodhours").text() + "hrs" + '</p>' +
-						'</li>'
-					).appendTo('#dataDisplayList');
-				});
-				$('#dataDisplayList').listview('refresh');
-			}
-		});
-		return false;
-	});
-
-	$("#yaml").on('click', function(){
-		console.log("Display yaml");
-		$.ajax({
-			url: 'xhr/data.yml',
-			type: 'GET',
-			dataType: 'text',
-			success: function(r){
-				// console.log(r);
-				var yml = jsyaml.load(r);
-				console.log(yml);
-				$('#dataDisplayList').empty();
-				for(var n in yml){
-					var obj = yml[n];
-					$(
-						'<li data-role="list-divider">' + '#: ' + n + '</li>' +
-						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["due"].getFullYear() + '-' + (obj["due"].getMonth()+1) + '-' + (obj["due"].getDate()+1) + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + obj["type"] + " Job for " + obj["company"] + '</strong>' + '</p>' +
-						'<p class="ui-li-desc">' + "Order Quantity: " + obj["qty"] + '</p>' +
-						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["prodhours"] + "hrs" + '</p>' +
-						'</li>'
-					).appendTo('#dataDisplayList');
-				}
-				$('#dataDisplayList').listview('refresh');
-			}
-		});
-		return false;
-	});
-
-	$("#csv").on('click', function(){
-		console.log("Display csv");
-		$.ajax({
-			url: 'xhr/data.csv',
-			type: 'GET',
-			dataType: 'text',
-			success: function(r){
-				$('#dataDisplayList').empty();
-				var csvObject = csvToObject(r);
-				console.log(csvObject);
-				for(var n in csvObject){
-					var obj = csvObject[n];
-					$(
-						'<li data-role="list-divider">' + '#: ' + n + '</li>' +
-						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + obj["due"] + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + obj["type"] + " Job for " + obj["company"] + '</strong>' + '</p>' +
-						'<p class="ui-li-desc">' + "Order Quantity: " + obj["qty"] + '</p>' +
-						'<p class="ui-li-desc">' + " Est. Production Time: " + obj["prodhours"] + "hrs" + '</p>' +
-						'</li>'
-					).appendTo('#dataDisplayList');
-				}
-				$('#dataDisplayList').listview('refresh');
-			}
-		});
-		return false;
-	});
-});
-$('#storage-items').on('pageinit', function(){
+$('#data-items').on('pageshow', function(){
 	
 });
+
 	
 $('#addItem').on('pageshow', function(){
 	// Enables validator debug messages. Used to test the rules: I created.
@@ -151,8 +37,6 @@ $('#addItem').on('pageshow', function(){
 		}
 	});
 
-
-	var jobNumCount;
 	var myForm = $('#jobForm'),
 		errorsLink = $("#errorsLink");
 	var validator = myForm.validate({
@@ -195,9 +79,8 @@ $('#addItem').on('pageshow', function(){
 		submitHandler: function(form) {
 			// var data = myForm.serializeArray();
 			// console.log(data);
-			storeData($("#jobnum").val());
+			saveData($("#jobnum").val());
 			form.reset();
-			jobCount();
 		}
 	});
 	// Have reset button clear red validation messages from form created var validator
@@ -208,12 +91,7 @@ $('#addItem').on('pageshow', function(){
 	
 	//any other code needed for addItem page goes here
 
-	jobCount($("#jobnum").val());
 
-	$("#clearData").on('click',function() {
-		clearLocal();
-		window.location.reload();
-	});
 });
 
 // Listen for the page change events
@@ -225,37 +103,25 @@ $(document).on( "pagebeforechange", function( e, data ) {
 		// want to handle URLs that request the data for a specific
 		// category.
 		var u = $.mobile.path.parseUrl( data.toPage ),
-			re = /^#storage-items/;
-		if ( u.hash.search(re) !== -1 ) {
-			// We're being asked to display the items for a specific category.
-			// Call our internal method that builds the content for the category
-			// on the fly based on our in-memory category data structure.
-			getData( u, data.options );
-			// Make sure to tell changePage() we've handled this call so it doesn't
-			// have to do anything.
+			re1 = /^#data-items/,
+			re2 = /^#data-item/;
+		if ( u.hash.search(re1) !== -1 ) {
+			getCategory( u, data.options );
+			e.preventDefault();
+		} else if ( u.hash.search(re2) !== -1 ) {
+			getItem( u, data.options );
 			e.preventDefault();
 		}
 	}
 });
 
-var autoFillData = function (){
-	for(var n in json){
-		var id = n;
-		localStorage.setItem(id, JSON.stringify(json[n]));
-	}
-};
-
-//The functions below can go inside or outside the pageinit function for the page in which it is needed.
-// Function that populates the Browse By categories from localStorage
-var getData = function( urlObj, options ){
+var getCategory = function( urlObj, options ){
 	var categoryName = urlObj.hash.replace( /.*category=/, "" ),
 		pageSelector = urlObj.hash.replace( /\?.*$/, "" ),
 		// Get the page we are going to dump our content into
 		$page = $( pageSelector ),
-
 		// Get the header for the page.
-		$header = $page.children( ":jqmData(role=header)" ),
-
+		$header = $page.children( ":jqmData(role=header)" )
 		// Get the content area element for the page.
 		$content = $page.children( ":jqmData(role=content)" );
 		
@@ -265,43 +131,47 @@ var getData = function( urlObj, options ){
 		console.log("cat: " + categoryName);
 		console.log("page: " + pageSelector);
 	
-	if (localStorage.length === 1 && localStorage.getItem("jobNumber")){
-		alert("Local Storage does not contain any jobs. Adding job test data.");
-		autoFillData();
 	}
 	
-	var keyArray = [];
-	for(var i = 0, j = localStorage.length; i < j; i++){
-		if(Number(localStorage.key(i))/1 === Number(localStorage.key(i))){
-			var key = localStorage.key(i);
-			var value = localStorage.getItem(key);
-			var localData = JSON.parse(value);
-			//console.log(localData);
-			var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
-			var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
-			
-			if (categoryName === localData["jobType"][1] ){
-				keyArray.push(key);
-				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
-				for(var n in localData){
-					var object = localData[n];
-					//console.log(localData);
-					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
-				}
-				markup += "</ul>" + editLink + deleteLink + "</div>";
-
-			} else if ( categoryName === "displayAll"){
-				keyArray.push(key);
-				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
-				for(var n in localData){
-					var object = localData[n];
-					//console.log(localData);
-					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
-				}
-				markup += "</ul>" + editLink + deleteLink + "</div>";
-			}
+	$.couch.db('jobapp').view('app/all-' + categoryName, {
+		success: function(data) {
+			$('#dataDisplayList').empty();
+			$.each(data.rows, function(index, value) {
+				
+			});
 		}
-	}
+	});
+//	for(var i = 0, j = localStorage.length; i < j; i++){
+//		if(Number(localStorage.key(i))/1 === Number(localStorage.key(i))){
+//			var key = localStorage.key(i);
+//			var value = localStorage.getItem(key);
+//			var localData = JSON.parse(value);
+//			//console.log(localData);
+//			var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
+//			var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
+//			
+//			if (categoryName === localData["jobType"][1] ){
+//				keyArray.push(key);
+//				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
+//				for(var n in localData){
+//					var object = localData[n];
+//					//console.log(localData);
+//					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
+//				}
+//				markup += "</ul>" + editLink + deleteLink + "</div>";
+//
+//			} else if ( categoryName === "displayAll"){
+//				keyArray.push(key);
+//				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
+//				for(var n in localData){
+//					var object = localData[n];
+//					//console.log(localData);
+//					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
+//				}
+//				markup += "</ul>" + editLink + deleteLink + "</div>";
+//			}
+//		}
+//	}
 	markup +="</div></ul>";
 		// Find the h1 element in our header and inject the name of the category into it.
 	if (categoryName != "displayAll"){
@@ -346,68 +216,35 @@ var getData = function( urlObj, options ){
 };
 
 var jobCount = function (value){
-	console.log("Start jobCount");
-	console.log("jobCount value:");
-	console.log(value);
-	console.log(localStorage.getItem("jobNumber"));
-	if (localStorage.getItem("jobNumber") !== value && value !== "" && value !== undefined ){
-		console.log("First if jobCount");
-	} else if (localStorage.getItem("jobNumber")) {
-		jobNumCount = localStorage["jobNumber"];
-		$("#jobnum").val(Number(jobNumCount));
-		console.log("Second if jobCount");
-	} else {
-		jobNumCount = 1000;
-		localStorage.setItem("jobNumber", jobNumCount.toString());
-		$("#jobnum").val(jobNumCount);
-		console.log("Third if jobCount");
-	};
-	console.log("End jobCount");
+	
 };
 
-var storeData = function(key){
+var saveData = function(key){
 	// Random key number for each job object
 	// Check to see if we are editing an existing item or it is a new item.
-	console.log("Start storeData");
-	console.log("storeData key:");
-	console.log(key);
-	if (!key || key === undefined){
-		var id = jobNumCount;
-		var num = Number($("#jobnum").val())+1;
-		localStorage["jobNumber"] = num.toString();
-	} else {
-		var id = key;
-		
-	}
-	// Get Radio button status
-	// getSelectedRadio();
+	console.log("Start saveData");
+	console.log("saveData key:");
+	
 	// Get all of the form data and create an object out of it
-	var jobFormData				= {};
-		jobFormData.jobNum		= ["Job Num", $("#jobnum").val()];
-		jobFormData.company		= ["Company", $("#company").val()];
-		jobFormData.address		= ["Address", $("#address").val()];
-		jobFormData.city		= ["City", $("#city").val()];
-		jobFormData.state		= ["State", $("#state").val()];
-		jobFormData.zipcode		= ["Zipcode", $("#zipcode").val()];
-		jobFormData.phone		= ["Phone", $("#phone").val()];
-		jobFormData.email		= ["Email", $("#email").val()];
-		jobFormData.oDate		= ["Order Date", $("#orderdate").val()];
-		jobFormData.needDate	= ["Need Date", $("#needbydate").val()];
-		jobFormData.rushOrder	= ["Rush Order", $('input:radio[name=rush]:checked').val()];
-		jobFormData.jobType		= ["Job Type", $("#jobTypeList").val()];
-		jobFormData.customInfo	= ["Custom Info", $("#custom").val()];
-		jobFormData.quantity	= ["Quantity", $("#qty").val()];
-		jobFormData.prodHours	= ["Production Hours", $("#production").val()];
-		jobFormData.designEff	= ["Design Effort", $("#slider-fill").val()];
+	var jobFormData	= {};
+		jobFormData["Job Number"] 		= $("#jobnum").val();
+		jobFormData["Company"]	  		= $("#company").val();
+		jobFormData["Address"]			= $("#address").val();
+		jobFormData["City"]				= $("#city").val();
+		jobFormData["State"]			= $("#state").val();
+		jobFormData["Zipcode"]			= $("#zipcode").val();
+		jobFormData["Phone"]			= $("#phone").val();
+		jobFormData["Email"]			= $("#email").val();
+		jobFormData["Order Date"]		= $("#orderdate").val();
+		jobFormData["Need Date"]		= $("#needbydate").val();
+		jobFormData["Rush Order"]		= $('input:radio[name=rush]:checked').val();
+		jobFormData["Job Type"]			= $("#jobTypeList").val();
+		jobFormData["Custom Info"]		= $("#custom").val();
+		jobFormData["Quantity"]			= $("#qty").val();
+		jobFormData["Production Hours"]	= $("#production").val();
+		jobFormData["Design Effort"]	= $("#slider-fill").val();
 
-	localStorage.setItem(id, JSON.stringify(jobFormData));
-	if (!key || key === undefined){
-		alert("Job #: " + jobNumCount + " Saved");
-	} else {
-		alert("Job #: " + key + " Saved");
-	}
-	jobCount();
-	console.log("End storeData");
+	console.log("End saveData");
 };
 
 var	deleteItem = function (){
