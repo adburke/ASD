@@ -1,29 +1,283 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>My New CouchApp</title>
-    <link rel="stylesheet" href="style/main.css" type="text/css">
-  </head>
-  <body>
-    <div id="account"></div>
+<!-- 	
+		Aaron Burke 
+-->
 
-    <h1>Generated CouchApp</h1>
+<!doctype html>  
+<html lang="en">
+<head>
 
-    <div id="profile"></div>
-    <div id="items"></div>
+	<meta charset="utf-8">
+	
+	<title>Job Manager</title>
+	
+	<!--  Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="HandheldFriendly" content="True">
+	<meta name="MobileOptimized" content="320"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- Mobile IE needs ClearType for smoothing fonts -->
+	<meta http-equiv="cleartype" content="on">
+	
+	<!-- StyleSheets under here -->
+	<!-- <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" /> -->
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+	<link rel="stylesheet" href="css/jqmstyles.css">
+	<!-- JavaScript is normally at the end of the body, except for Modernizr which enables HTML5 elements & feature detects -->
+	<script src="js/libs/modernizr.custom.min.js"></script>
 
-    <div id="sidebar">
-      <p>Edit welcome message.</p>
-      <p>Ideas: You could easily turn this into a photo sharing app, or a grocery list, or a chat room.</p>
-    </div>
-  </body>
-  <script src="vendor/couchapp/loader.js"></script>
-  <script type="text/javascript" charset="utf-8">
-    $.couch.app(function(app) {
-      $("#account").evently("account", app);
-      $("#profile").evently("profile", app);
-      $.evently.connect("#account","#profile", ["loggedIn","loggedOut"]);
-      $("#items").evently("items", app);
-    });
-  </script>
+</head>
+	<body>
+		<div id="home" data-role="page" data-theme="d">
+
+			<div data-role="header" data-theme="b" data-position="fixed">
+				<img src="images/cta-small.png" alt="cta"></a>
+				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>	
+			</div><!-- /header -->
+			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
+					<li data-role="divider" data-theme="a">Navigation</li>
+					<li><a href="#home">Index</a></li>
+					<li><a href="#addItem">New Job Form</a></li>
+					
+					<li><a href="#data-items">Data Display Test</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+			<!-- <div data-role="content" data-theme="d" id="search">
+			  <input type="search" name="search-mini" id="search-mini" value="" data-mini="true" />
+			</div> -->
+			<div data-role="content" data-theme="d">
+				<div id="cta">
+					<a href="#addItem"><img src="images/cta.png" alt="cta"></a>
+				</div>
+				<ul id="browse" data-role="listview" data-inset="true" data-theme="d" data-divider-theme="b">
+					<li data-role="list-divider">Browse By Job Type:</li>
+					<li id="mainBtn"><a href="#storage-items?category=Banner"><h3>Banner</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Decal"><h3>Decal</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Sign"><h3>Sign</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Display"><h3>Display</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Poster"><h3>Poster</h3></a></li>
+					<li id="mainBtn"><a href="#storage-items?category=Custom"><h3>Custom</h3></a></li>
+				</ul>
+			</div><!-- /content -->
+
+			<div data-role="footer" data-theme="a">
+				<div data-role="navbar" data-iconpos="top">
+					<ul>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
+						<li><a href="#addItem" data-icon="plus">New Job</a></li>
+					</ul>
+				</div>
+			</div><!-- /footer -->
+		</div><!-- home page -->
+
+		<div id="data-items" data-role="page" data-theme="d" data-add-back-btn="true">
+  			<div data-role="header" data-theme="b">
+  				<h1>Data Display Test</h1>
+ 				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>
+  			</div>
+  			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
+					<li data-role="divider" data-theme="a">Navigation</li>
+					<li><a href="#home">Index</a></li>
+					<li><a href="#addItem">New Job Form</a></li>
+					
+					<li><a href="#data-items">Data Display Test</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+  			<div data-role="content" id="dataDisplayMain">
+  				<div data-role="controlgroup" data-type="horizontal" id="dataButtons">
+					<a href="#data-items" data-role="button" id="json">JSON</a>
+					<a href="#data-items" data-role="button" id="xml">XML</a>
+					<a href="#data-items" data-role="button" id="yaml">YAML</a>
+					<a href="#data-items" data-role="button" id="csv">CSV</a>
+				</div>	
+				<ul data-role="listview" data-inset=​"true" id="dataDisplayList">​</ul>
+  			</div>
+  			<div data-role="footer" data-theme="a">
+				<div data-role="navbar" data-iconpos="top">
+					<ul>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
+						<li><a href="#addItem" data-icon="plus">New Job</a></li>
+					</ul>
+				</div>
+			</div><!-- /footer -->
+		</div><!-- data-items page --><!-- storage-items page -->
+
+		<div id="addItem" data-role="page" data-theme="d" data-add-back-btn="true">
+
+			<div data-role="header" data-theme="b" data-position="fixed">
+				<img src="images/cta-small.png" alt="cta">
+				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>
+			</div><!-- /header -->
+			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
+					<li data-role="divider" data-theme="a">Navigation</li>
+					<li><a href="#home">Index</a></li>
+					<li><a href="#addItem">New Job Form</a></li>					
+					<li><a href="#data-items">Data Display Test</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+			<div data-role="content" data-theme="d">
+				<form action="#" id="jobForm">
+				<ul data-role="listview" data-inset="true">
+    				<li data-role="list-divider">Job Info</li>
+    				<li style="padding:0;border:0;">
+					<fieldset>
+						<div data-role="fieldcontain">
+							<label for="jobnum">Job #: <span>readonly</span></label><input type="text" id="jobnum" name="jobnum" readonly/>
+						</div>
+						<div data-role="fieldcontain">
+							<label for="company">Company: <span>required</span></label><input type="text"  id="company" name="company" class="required" required aria-required="true" placeholder="Company Name"/>
+						</div>
+						<div data-role="fieldcontain">
+							<label for="address">Address: <span>required</span></label><input type="text"  id="address" name="address" class="required" required aria-required="true" placeholder="123 Test Blvd."/>
+						</div>
+						<div data-role="fieldcontain" >
+							<div class='ui-grid-a'>
+								<div class='ui-block-a' id="cityHolder">
+									<label for="city">City: <span>required</span></label><input type="text"  id="city" name="city" class="required" required aria-required="true" placeholder="Huntsville"/>
+								</div>
+								<div class='ui-block-b' id="stateHolder">
+									<label for="state">State: <span>required</span></label><input type="text"  id="state" name="state" class="required" required aria-required="true" placeholder="Alabama"/>
+								</div>
+							</div>
+						</div>
+						<div data-role="fieldcontain" >
+							<div class='ui-grid-a'>
+								<div class='ui-block-a' id="zipHolder">
+									<label for="zipcode">Zip Code: <span>required</span></label><input type="text"  id="zipcode" name="zipcode" class="required digits" required aria-required="true" placeholder="#####"/>
+								</div>
+								<div class='ui-block-b' id="phoneHolder">
+									<label for="phone">Phone: <span>required</span></label><input type="tel"  id="phone" name="phone" class="required phoneUS" required aria-required="true" placeholder="###-###-####"/>
+								</div>
+							</div>
+						</div>
+						<div data-role="fieldcontain" >
+							<label for="email">Email: <span>required</span></label><input type="email"  id="email" name="email" class="required email" required aria-required="true" placeholder="example@abc.com"/>
+						</div>
+						<div data-role="fieldcontain" >
+							<label for="orderdate">Order Date: <span>required</span></label><input type="date" id="orderdate" name="orderdate" class="required date" required aria-required="true" />
+						</div>
+						<div data-role="fieldcontain" >
+							<label for="needbydate">Due Date: <span>required</span></label><input type="date"  id="needbydate" name="needbydate" class="required date" required aria-required="true" placeholder="yyyy-mm-dd"/>
+						</div>
+						<div data-role="fieldcontain" >
+							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+								<div role ="heading">Rush Order?</div>
+									<label for="yes">Yes</label><input type="radio" value="Yes" id="yes" name="rush" class="radio" />
+									<label for="no">No</label><input type="radio" value="No" id="no" name="rush" class="radio" checked="checked"/>
+							</fieldset>
+						</div>
+					</fieldset>
+				</ul>
+				<ul data-role="listview" data-inset="true">
+    				<li data-role="list-divider">Job Description</li>
+    				<li style="padding:0;border:0;">
+					<fieldset>
+						<div data-role="fieldcontain" >
+							<label for="select-choice-min" class="select">Job Type: <span>required</span></label>
+							<select name="select-choice-min" id="jobTypeList" data-mini="true"  >
+								<option value="">--Job Types--</option>
+								<option value="Banner">Banner</option>
+								<option value="Decal">Decal</option>
+								<option value="Sign">Sign</option>
+								<option value="Display">Display</option>
+								<option value="Poster">Poster</option>
+								<option value="Custom">Custom</option>
+							</select>
+						</div>
+						<div data-role="fieldcontain" id="customContain">
+							<label for="custom">Custom Info:</label><textarea id="custom" name="custom" class="custom"></textarea>
+						</div>
+						<div data-role="fieldcontain" >
+							<label for="qty">Quantity: <span>required</span></label><input type="number"  id="qty" name="qty" required aria-required="true" placeholder="#"/>
+						</div>
+						<div data-role="fieldcontain" >
+							<label for="production">LOE Hours: <span>required</span></label><input type="number"  id="production" name="production" required aria-required="true" placeholder="#"/>
+						</div>
+						<div data-role="fieldcontain" >
+							<label for="slider-fill">Estimation of Design Hours 1-10: </label><input type="range" min="1" max="10" value="1" id="slider-fill" class="slider-fill" name="slider-fill" data-highlight="true" />
+						</div>
+					</fieldset>
+				</ul>
+				<div class='ui-grid-a'>
+					<div class='ui-block-a'><input type="submit" class="submit" value="Save Job" /></div>
+					<div class='ui-block-b'><input type="reset" class="reset" value="Reset Form" data-theme="b"/></div>
+				</div>
+				<a href="#formErrors" id="errorsLink" data-rel="dialog" data-transition="pop">Open Errors</a>
+			</form>
+			</div><!-- /content -->
+
+			<div data-role="footer" data-theme="a">
+				<div data-role="navbar" id="addItemNav" data-iconpos="top">
+					<ul>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
+						<li><a href="#" id="clearData" data-icon="minus">Clear Data</a></li>
+					</ul>
+				</div>
+			</div><!-- /footer -->
+		</div><!-- addItem page -->
+		<div id="formErrors" data-role="dialog" data-theme="d">
+
+			<div data-role="header" data-theme="b" data-position="fixed">
+				<h1>Missing Fields</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<ul>
+					<li>Test.</li>
+				</ul>
+			</div>
+		</div>
+
+  		<div id="about" data-role="page" data-theme="d" data-add-back-btn="true">
+  			<div data-role="header" data-theme="b" ><img src="images/cta-small.png" alt="cta">
+ 				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>
+  			</div>
+  			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
+					<li data-role="divider" data-theme="a">Navigation</li>
+					<li><a href="#home">Index</a></li>
+					<li><a href="#addItem">New Job Form</a></li>
+					<li><a href="#data-items">Data Display Test</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+
+  			<div data-role="content">
+  				<div id="logoAbout">
+					<img src="images/cta-logo.png" alt="cta">
+				</div>
+  				<div class="ui-grid-a">
+					<div class="ui-block-a"><h1>WHO?</h1>Aaron Burke</div>
+					<div class="ui-block-b"><h1>WHAT?</h1>MIU Project</div>
+					<div class="ui-block-a"><h1>WHEN?</h1>10.2012</div>
+					<div class="ui-block-b"><h1>WHY?</h1>Hey! Wait! What about where?</div>
+				</div><!-- /grid-b -->
+  			</div>
+
+  			<div data-role="footer" data-theme="a">
+				<div data-role="navbar" data-iconpos="top">
+					<ul>
+						<li><a href="#storage-items?category=displayAll" data-icon="grid">All Jobs</a></li>
+						<li><a href="#addItem" data-icon="plus">New Job</a></li>
+					</ul>
+				</div>
+			</div>
+		</div><!-- about page -->
+
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script> 
+		<!-- <script src="js/libs/jquery-1.8.2.min.js"></script>
+		<script src="js/libs/jquery.mobile-1.2.0.min.js"></script> -->
+		<script src="js/libs/jquery.validate.min.js"></script>
+		<script src="js/libs/additional-methods.min.js"></script>
+		<script src="js/libs/jquery.couch.js"></script>
+		<script src="js/libs/js-yaml.min.js"></script>
+		<script src="js/main.js"></script>
+		
+	</body>
 </html>
+
