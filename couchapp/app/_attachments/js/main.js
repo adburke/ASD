@@ -19,7 +19,7 @@ $('#data-items').on('pageshow', function(e){
 	});
 	$("#closed").on('click', function(){
 		console.log("Display closed");
-		$.couch.db('jobapp').view('app/all-' + type, {
+		$.couch.db('jobapp').view('app/all-' + type + '?startkey=[1,0]&endkey=[1,{}]' , {
 			success: function(r){
 				console.log(r);
 			}
@@ -28,7 +28,7 @@ $('#data-items').on('pageshow', function(e){
 	});
 	$("#open").on('click', function(){
 		console.log("Display open");
-		$.couch.db('jobapp').view('app/all-' + type, {
+		$.couch.db('jobapp').view('app/all-' + type + '?startkey=[0,0]&endkey=[0,{}]', {
 			success: function(r){
 				console.log(r);
 			}
