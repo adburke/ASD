@@ -21,7 +21,7 @@
 	<!-- StyleSheets under here -->
 	<!-- <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" /> -->
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-	<link rel="stylesheet" href="css/jqmstyles.css">
+	<link rel="stylesheet" href="style/jqmstyles.css">
 	<!-- JavaScript is normally at the end of the body, except for Modernizr which enables HTML5 elements & feature detects -->
 	<script src="js/libs/modernizr.custom.min.js"></script>
 
@@ -37,9 +37,7 @@
 				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
 					<li data-role="divider" data-theme="a">Navigation</li>
 					<li><a href="#home">Index</a></li>
-					<li><a href="#addItem">New Job Form</a></li>
-					
-					<li><a href="#data-items">Data Display Test</a></li>
+					<li><a href="#addItem">New Job Form</a></li>									
 					<li><a href="#about">About</a></li>
 				</ul>
 			</div>
@@ -49,11 +47,11 @@
 				</div>
 				<ul id="browse" data-role="listview" data-inset="true" data-theme="d" data-divider-theme="b">
 					<li data-role="list-divider">Browse By Job Type:</li>
-					<li id="mainBtn"><a href="#data-items?category=Banners"><h3>Banner</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Decals"><h3>Decal</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Signs"><h3>Sign</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Displays"><h3>Display</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Posters"><h3>Poster</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=Banner"><h3>Banner</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=Decal"><h3>Decal</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=Sign"><h3>Sign</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=Display"><h3>Display</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=Poster"><h3>Poster</h3></a></li>
 					<li id="mainBtn"><a href="#data-items?category=Custom"><h3>Custom</h3></a></li>
 				</ul>
 			</div><!-- /content -->
@@ -77,18 +75,15 @@
 				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
 					<li data-role="divider" data-theme="a">Navigation</li>
 					<li><a href="#home">Index</a></li>
-					<li><a href="#addItem">New Job Form</a></li>
-					
-					<li><a href="#data-items">Data Display Test</a></li>
+					<li><a href="#addItem">New Job Form</a></li>					
 					<li><a href="#about">About</a></li>
 				</ul>
 			</div>
   			<div data-role="content" id="dataDisplayMain">
   				<div data-role="controlgroup" data-type="horizontal" id="dataButtons">
-					<a href="#data-items" data-role="button" id="json">JSON</a>
-					<a href="#data-items" data-role="button" id="xml">XML</a>
-					<a href="#data-items" data-role="button" id="yaml">YAML</a>
-					<a href="#data-items" data-role="button" id="csv">CSV</a>
+					<a href="" data-role="button" data-mini="true" id="all">All</a>
+					<a href="" data-role="button" data-mini="true" id="open">OPEN</a>
+					<a href="" data-role="button" data-mini="true" id="closed">CLOSED</a>
 				</div>	
 				<ul data-role="listview" data-inset=​"true" id="dataDisplayList">​</ul>
   			</div>
@@ -112,8 +107,7 @@
 				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
 					<li data-role="divider" data-theme="a">Navigation</li>
 					<li><a href="#home">Index</a></li>
-					<li><a href="#addItem">New Job Form</a></li>					
-					<li><a href="#data-items">Data Display Test</a></li>
+					<li><a href="#addItem">New Job Form</a></li>								
 					<li><a href="#about">About</a></li>
 				</ul>
 			</div>
@@ -238,7 +232,6 @@
 					<li data-role="divider" data-theme="a">Navigation</li>
 					<li><a href="#home">Index</a></li>
 					<li><a href="#addItem">New Job Form</a></li>
-					<li><a href="#data-items">Data Display Test</a></li>
 					<li><a href="#about">About</a></li>
 				</ul>
 			</div>

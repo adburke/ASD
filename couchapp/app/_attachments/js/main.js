@@ -3,10 +3,47 @@ $('#home').on('pageinit', function(){
 	
 });
 
-$('#data-items').on('pageshow', function(){
-	
+$('#data-items').on('pageshow', function(e){
+	var type = urlVars();
+	$("#all").off();
+	$("#closed").off();
+	$("#open").off();
+	$("#all").on('click', function(e){
+		console.log("Display all");
+		$.couch.db('jobapp').view('app/all-' + type, {
+			success: function(r){
+				console.log(r);
+			}
+		});
+		return false;
+	});
+	$("#closed").on('click', function(){
+		console.log("Display closed");
+		$.couch.db('jobapp').view('app/all-' + type, {
+			success: function(r){
+				console.log(r);
+			}
+		});
+		return false;
+	});
+	$("#open").on('click', function(){
+		console.log("Display open");
+		$.couch.db('jobapp').view('app/all-' + type, {
+			success: function(r){
+				console.log(r);
+			}
+		});
+		return false;
+	});
 });
 
+var urlVars = function(){
+	var urlData = $.mobile.path.parseUrl(window.location.href);
+	var type = urlData.hash.split("=");
+	console.log(urlData);
+	console.log(type);
+	return type[1];
+}
 	
 $('#addItem').on('pageshow', function(){
 	// Enables validator debug messages. Used to test the rules: I created.
@@ -125,17 +162,36 @@ var getCategory = function( urlObj, options ){
 		// Get the content area element for the page.
 		$content = $page.children( ":jqmData(role=content)" );
 		
-		collapseSet = "<div id='jobs' data-role='collapsible-set' data-content-theme='b'>",
-		markup = "";
+//		collapseSet = "<div id='jobs' data-role='collapsible-set' data-content-theme='b'>",
+//		markup = "";
 
 		console.log("cat: " + categoryName);
-		console.log("page: " + pageSelector);
-	
-	}
+		console.log("page: " + pageSelector);	
 	
 	$.couch.db('jobapp').view('app/all-' + categoryName, {
 		success: function(data) {
+			console.log(data);
 			$('#dataDisplayList').empty();
+//			$('<a>').appendTo('#dataButtons').attr({
+//				href: '?category=' + categoryName,
+//				'data-role': 'button',
+//				'data-mini': 'true',
+//				'id': 'all'
+//			}).text("ALL");
+//			
+//			$('<a>').appendTo('#dataButtons').attr({
+//				href: '?category=' + categoryName + '?startkey=[0,0]&endkey=[0,{}]',
+//				'data-role': 'button',
+//				'data-mini': 'true',
+//				'id': 'open'
+//			}).text("OPEN");
+//			
+//			$('<a>').appendTo('#dataButtons').attr({
+//				href: '?category=' + categoryName + '?startkey=[1,0]&endkey=[1,{}]',
+//				'data-role': 'button',
+//				'data-mini': 'true',
+//				'id': 'closed'
+//			}).text("CLOSED");
 			$.each(data.rows, function(index, value) {
 				
 			});
@@ -172,14 +228,14 @@ var getCategory = function( urlObj, options ){
 //			}
 //		}
 //	}
-	markup +="</div></ul>";
+//	markup +="</div></ul>";
 		// Find the h1 element in our header and inject the name of the category into it.
 	if (categoryName != "displayAll"){
 		$header.find( "h1" ).html(categoryName + " Jobs");
 	} else {
 		$header.find( "h1" ).html("All Jobs");
 	}
-	$content.html( collapseSet + markup);
+//	$content.html( collapseSet + markup);
 	
 	$('.delete').each(function(i){
 		this.key = keyArray[i];
@@ -202,6 +258,7 @@ var getCategory = function( urlObj, options ){
 		$content.find( ":jqmData(role=collapsible-set)" ).collapsibleset();
 		$content.find( ":jqmData(role=listview)" ).listview();
 		$content.find( ":jqmData(role=button)" ).button();
+		$content.find( ":jqmData(role=controlgroup)" ).controlgroup();
 		
 		// We don't want the data-url of the page we just modified
 		// to be the url that shows up in the browser's location field,
