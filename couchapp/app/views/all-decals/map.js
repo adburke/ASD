@@ -1,5 +1,5 @@
 function(doc) {
-  if (doc._id.substr(0, 4) === "job:" ) {
-    emit(doc["Job Number"], doc._id);
+  if ( doc._id.substr(0, 10) === "job:decal:" ) {
+    emit( doc["Job Number"], doc._id);
   }
 };
