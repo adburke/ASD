@@ -72,3 +72,8 @@ div.ui-header.ui-bar-b img {
 	margin: 0 auto;
 	padding:2px;
 }
+#open, #all, #closed {
+	width: 100px;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}

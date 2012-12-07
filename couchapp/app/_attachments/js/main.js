@@ -4,33 +4,99 @@ $('#home').on('pageinit', function(){
 });
 
 $('#data-items').on('pageshow', function(e){
+	console.log("data items fired");
 	var type = urlVars();
-	$("#all").off();
+
+	$("#dataButtons").controlgroup('refresh');
+	//Remove events from buttons on pageshow so they do not duplicate between page changes
+	$("#all" ).off();
 	$("#closed").off();
 	$("#open").off();
+	
+	//Click events to sort a category
 	$("#all").on('click', function(e){
 		console.log("Display all");
 		$.couch.db('jobapp').view('app/all-' + type, {
-			success: function(r){
-				console.log(r);
+			success: function(data) {
+				console.log(data);
+				$('#dataDisplayList').empty();
+				$.each(data.rows, function(index, data) {
+					console.log(data);
+					var status = (data.key[1] === 0) ? "OPEN" : "CLOSED";
+					var due = (data.key[0]).join("/");
+					var job = data.key[2];
+					var customer = data.value.customer;
+					var qty = data.value.qty;
+					var prodt = data.value.prodt;
+					$(
+						'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
+						'<li>' +
+						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
+						'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+						'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
+						'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
+						'</li>'
+						).appendTo('#dataDisplayList');
+				});
+				$('#dataDisplayList').listview('refresh');
 			}
 		});
 		return false;
 	});
 	$("#closed").on('click', function(){
 		console.log("Display closed");
-		$.couch.db('jobapp').view('app/all-' + type + '?startkey=[1,0]&endkey=[1,{}]' , {
-			success: function(r){
-				console.log(r);
+		$.couch.db('jobapp').view('app/all-' + type + '-status?startkey=[1,0]&endkey=[1,{}]' , {
+			success: function(data) {
+				console.log(data);
+				$('#dataDisplayList').empty();
+				$.each(data.rows, function(index, data) {
+					console.log(data);
+					var status = (data.key[0] === 0) ? "OPEN" : "CLOSED";
+					var due = (data.value.due).join("/");
+					var job = data.key[1];
+					var customer = data.value.customer;
+					var qty = data.value.qty;
+					var prodt = data.value.prodt;
+					$(
+						'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
+						'<li>' +
+						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
+						'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+						'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
+						'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
+						'</li>'
+						).appendTo('#dataDisplayList');
+				});
+				$('#dataDisplayList').listview('refresh');
 			}
 		});
 		return false;
 	});
 	$("#open").on('click', function(){
 		console.log("Display open");
-		$.couch.db('jobapp').view('app/all-' + type + '?startkey=[0,0]&endkey=[0,{}]', {
-			success: function(r){
-				console.log(r);
+		$.couch.db('jobapp').view('app/all-' + type + '-status?startkey=[0,0]&endkey=[0,{}]', {
+			success: function(data) {
+				console.log(data);
+				$('#dataDisplayList').empty();
+				$.each(data.rows, function(index, data) {
+					console.log(data);
+					var status = (data.key[0] === 0) ? "OPEN" : "CLOSED";
+					var due = (data.value.due).join("/");
+					var job = data.key[1];
+					var customer = data.value.customer;
+					var qty = data.value.qty;
+					var prodt = data.value.prodt;
+					$(
+						'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
+						'<li>' +
+						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
+						'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+						'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
+						'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
+						'</li>'
+						).appendTo('#dataDisplayList');
+				});
+				$('#dataDisplayList').listview('refresh');
 			}
 		});
 		return false;
@@ -162,9 +228,6 @@ var getCategory = function( urlObj, options ){
 		// Get the content area element for the page.
 		$content = $page.children( ":jqmData(role=content)" );
 		
-//		collapseSet = "<div id='jobs' data-role='collapsible-set' data-content-theme='b'>",
-//		markup = "";
-
 		console.log("cat: " + categoryName);
 		console.log("page: " + pageSelector);	
 	
@@ -172,71 +235,28 @@ var getCategory = function( urlObj, options ){
 		success: function(data) {
 			console.log(data);
 			$('#dataDisplayList').empty();
-//			$('<a>').appendTo('#dataButtons').attr({
-//				href: '?category=' + categoryName,
-//				'data-role': 'button',
-//				'data-mini': 'true',
-//				'id': 'all'
-//			}).text("ALL");
-//			
-//			$('<a>').appendTo('#dataButtons').attr({
-//				href: '?category=' + categoryName + '?startkey=[0,0]&endkey=[0,{}]',
-//				'data-role': 'button',
-//				'data-mini': 'true',
-//				'id': 'open'
-//			}).text("OPEN");
-//			
-//			$('<a>').appendTo('#dataButtons').attr({
-//				href: '?category=' + categoryName + '?startkey=[1,0]&endkey=[1,{}]',
-//				'data-role': 'button',
-//				'data-mini': 'true',
-//				'id': 'closed'
-//			}).text("CLOSED");
-			$.each(data.rows, function(index, value) {
-				
+			$.each(data.rows, function(index, data) {
+				console.log(data);
+				var status = (data.key[1] === 0) ? "OPEN" : "CLOSED";
+				var due = (data.key[0]).join("/");
+				var job = data.key[2];
+				var customer = data.value.customer;
+				var qty = data.value.qty;
+				var prodt = data.value.prodt;
+				$(
+					'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
+					'<li>' +
+					'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
+					'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+					'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
+					'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
+					'</li>'
+					).appendTo('#dataDisplayList');
 			});
+			$('#dataDisplayList').listview('refresh');
 		}
 	});
-//	for(var i = 0, j = localStorage.length; i < j; i++){
-//		if(Number(localStorage.key(i))/1 === Number(localStorage.key(i))){
-//			var key = localStorage.key(i);
-//			var value = localStorage.getItem(key);
-//			var localData = JSON.parse(value);
-//			//console.log(localData);
-//			var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit Job</a></div>";
-//			var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete Job</a></div></div>";
-//			
-//			if (categoryName === localData["jobType"][1] ){
-//				keyArray.push(key);
-//				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
-//				for(var n in localData){
-//					var object = localData[n];
-//					//console.log(localData);
-//					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
-//				}
-//				markup += "</ul>" + editLink + deleteLink + "</div>";
-//
-//			} else if ( categoryName === "displayAll"){
-//				keyArray.push(key);
-//				markup += "<div id='jobUni' data-role='collapsible' data-inset='true'><h3>" + "#: " + localData["jobNum"][1] + "</h3><ul data-role='listview' data-inset='true'>";
-//				for(var n in localData){
-//					var object = localData[n];
-//					//console.log(localData);
-//					markup += "<li>" + object[0] + ": " +object[1] + "</li>";
-//				}
-//				markup += "</ul>" + editLink + deleteLink + "</div>";
-//			}
-//		}
-//	}
-//	markup +="</div></ul>";
-		// Find the h1 element in our header and inject the name of the category into it.
-	if (categoryName != "displayAll"){
-		$header.find( "h1" ).html(categoryName + " Jobs");
-	} else {
-		$header.find( "h1" ).html("All Jobs");
-	}
-//	$content.html( collapseSet + markup);
-	
+
 	$('.delete').each(function(i){
 		this.key = keyArray[i];
 		$(this).on("click", deleteItem);
@@ -246,8 +266,13 @@ var getCategory = function( urlObj, options ){
 		this.key = keyArray[i];
 		$(this).on("click", editItem);
 	});
-	
-
+	if(categoryName === "Jobs"){
+		$("#all").hide();
+		$("#data-items").find("h1").html("All Jobs");
+	}else {
+		$("#all").show();
+		$("#data-items").find("h1").html( categoryName + " Jobs");
+	}
 		// Pages are lazily enhanced. We call page() on the page
 		// element to make sure it is always enhanced before we
 		// attempt to enhance the listview markup we just injected.
