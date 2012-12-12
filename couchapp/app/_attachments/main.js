@@ -3,10 +3,26 @@ $('#home').on('pageinit', function(){
 	
 });
 
-$('#data-items').on('pageshow', function(e){
-	console.log("data items fired");
-	var type = urlVars();
+$('#data-item').on('pageshow', function(){
+	var typeArr = urlVars("=");
+	var type = typeArr[1];
+	console.log(type);
+	$('.delete').on('click', function(){
+		console.log('delete clicked');
+		deleteItem(type);
+		return false;
+	});
+	$('.edit').on('click', function(){
+		console.log('edit clicked');
+		editItem(type);
+		return false;
+	});
+});
 
+$('#data-items').on('pageshow', function(){
+	console.log("data items fired");
+	var typeArr = urlVars("=");
+	var type = typeArr[1];
 	$("#dataButtons").controlgroup('refresh');
 	//Remove events from buttons on pageshow so they do not duplicate between page changes
 	$("#all" ).off();
@@ -14,7 +30,7 @@ $('#data-items').on('pageshow', function(e){
 	$("#open").off();
 	
 	//Click events to sort a category
-	$("#all").on('click', function(e){
+	$("#all").on('click', function(){
 		console.log("Display all");
 		$.couch.db('jobapp').view('app/all-' + type, {
 			success: function(data) {
@@ -28,14 +44,14 @@ $('#data-items').on('pageshow', function(e){
 					var customer = data.value.customer;
 					var qty = data.value.qty;
 					var prodt = data.value.prodt;
+					var theme = (status === "OPEN" ) ? 'b' : 'a';
 					$(
-						'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
-						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+						'<li data-role="divider" data-theme=' + theme + ' id="jobDiv">' + 'Job #: ' + job  + '<span class="dividerMargin">'+ status + '</span>' + '<span class="dividerMargin">'+ "Due: " + due + '</span>' + '</li>' +
+						'<li>' + '<a href=#data-item?item=' + data.id + '>' +
+						'<p class="ui-li-desc">' + '<strong>' + customer + '</strong>' + '</p>' +
 						'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
 						'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
-						'</li>'
+						'</a></li>'
 						).appendTo('#dataDisplayList');
 				});
 				$('#dataDisplayList').listview('refresh');
@@ -57,14 +73,14 @@ $('#data-items').on('pageshow', function(e){
 					var customer = data.value.customer;
 					var qty = data.value.qty;
 					var prodt = data.value.prodt;
+					var theme = (status === "OPEN" ) ? 'b' : 'a';
 					$(
-						'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
-						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+						'<li data-role="divider" data-theme=' + theme + ' id="jobDiv">' + 'Job #: ' + job  + '<span class="dividerMargin">'+ status + '</span>' + '<span class="dividerMargin">'+ "Due: " + due + '</span>' + '</li>' +
+						'<li>' + '<a href=#data-item?item=' + data.id + '>' +
+						'<p class="ui-li-desc">' + '<strong>' + customer + '</strong>' + '</p>' +
 						'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
 						'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
-						'</li>'
+						'</a></li>'
 						).appendTo('#dataDisplayList');
 				});
 				$('#dataDisplayList').listview('refresh');
@@ -86,14 +102,14 @@ $('#data-items').on('pageshow', function(e){
 					var customer = data.value.customer;
 					var qty = data.value.qty;
 					var prodt = data.value.prodt;
+					var theme = (status === "OPEN" ) ? 'b' : 'a';
 					$(
-						'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
-						'<li>' +
-						'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
-						'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+						'<li data-role="divider" data-theme=' + theme + ' id="jobDiv">' + 'Job #: ' + job  + '<span class="dividerMargin">'+ status + '</span>' + '<span class="dividerMargin">'+ "Due: " + due + '</span>' + '</li>' +
+						'<li>' + '<a href=#data-item?item=' + data.id + '>' +
+						'<p class="ui-li-desc">' + '<strong>' + customer + '</strong>' + '</p>' +
 						'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
 						'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
-						'</li>'
+						'</a></li>'
 						).appendTo('#dataDisplayList');
 				});
 				$('#dataDisplayList').listview('refresh');
@@ -103,21 +119,21 @@ $('#data-items').on('pageshow', function(e){
 	});
 });
 
-var urlVars = function(){
+var urlVars = function(splitVal){
 	var urlData = $.mobile.path.parseUrl(window.location.href);
-	var type = urlData.hash.split("=");
+	var type = urlData.hash.split(splitVal);
 	console.log(urlData);
 	console.log(type);
-	return type[1];
+	return type;
 }
 	
-$('#addItem').on('pageshow', function(){
+$('#addItem').on('pageinit', function(){
 	// Enables validator debug messages. Used to test the rules: I created.
 	// jQuery.validator.setDefaults({
 	// 	debug: true,
 	// 	success: "valid"
 	// });;
-	
+
 	// Injects current date as default for order date on form
 	var myDate = new Date();
     var month = myDate.getMonth() + 1;
@@ -139,7 +155,7 @@ $('#addItem').on('pageshow', function(){
 
 		}
 	});
-
+    
 	var myForm = $('#jobForm'),
 		errorsLink = $("#errorsLink");
 	var validator = myForm.validate({
@@ -168,7 +184,7 @@ $('#addItem').on('pageshow', function(){
 			},
 
 		invalidHandler: function(form, validator) {
-			errorsLink.click();
+//			errorsLink.click();
 			var html = "";
 			for(var key in validator.submitted){
 				var label = $('label[for^="'+ key +'"]').not("[generated]");
@@ -180,9 +196,7 @@ $('#addItem').on('pageshow', function(){
 			$("#formErrors ul").html(html);
 		},
 		submitHandler: function(form) {
-			// var data = myForm.serializeArray();
-			// console.log(data);
-			saveData($("#jobnum").val());
+			saveData();
 			form.reset();
 		}
 	});
@@ -218,6 +232,41 @@ $(document).on( "pagebeforechange", function( e, data ) {
 	}
 });
 
+var getItem = function ( urlObj, options ){
+	var jobID = urlObj.hash.replace( /.*item=/, "" ),
+	pageSelector = urlObj.hash.replace( /\?.*$/, "" ),
+	$page = $( pageSelector ),
+	$header = $page.children( ":jqmData(role=header)" )
+	$content = $page.children( ":jqmData(role=content)" );
+	
+	var editLink = "<div class='ui-grid-a'><div class='ui-block-a'><a class='edit' data-role='button' data-theme='b' data-icon='plus' href='#'>Edit</a></div>";
+	var deleteLink = "<div class='ui-block-b'><a class='delete' data-role='button' data-theme='b' data-icon='minus' href='#'>Delete</a></div></div>";
+	
+	$('#jobDisplay').empty();
+	$.couch.db('jobapp').openDoc(jobID, {
+		success: function(data) {
+			console.log(data);
+			
+			$(		'<div id=itemInfo>' +
+					'<p class="ui-li-aside ui-li-desc">'+ "Due: " + data["Due Date"] + '</p>' +
+					'<p class="ui-li-desc">' + '<strong>' + data["Company"] + '</strong>' + '</p>' +
+					'<p class="ui-li-desc">' + "Order Quantity: " + data["Quantity"] + '</p>' +
+					'<p class="ui-li-desc">' + " Est. Production Time: " + data["Production Hours"] + "hrs" + '</p>' +
+					'</div>'
+				).appendTo('#jobDisplay');
+			$('#jobDisplay').find('#itemInfo');
+			$('#itemInfo').append(editLink + deleteLink);
+			$('#jobDisplay').find( ":jqmData(role=button)" ).button();
+		}
+		
+	});
+	
+	$page.page();
+	$('#jobDisplay').find( ":jqmData(role=button)" ).button();
+	options.dataUrl = urlObj.href;
+	$.mobile.changePage( $page, options );
+};
+
 var getCategory = function( urlObj, options ){
 	var categoryName = urlObj.hash.replace( /.*category=/, "" ),
 		pageSelector = urlObj.hash.replace( /\?.*$/, "" ),
@@ -229,7 +278,8 @@ var getCategory = function( urlObj, options ){
 		$content = $page.children( ":jqmData(role=content)" );
 		
 		console.log("cat: " + categoryName);
-		console.log("page: " + pageSelector);	
+		console.log("page: " + pageSelector);
+		
 	
 	$.couch.db('jobapp').view('app/all-' + categoryName, {
 		success: function(data) {
@@ -243,31 +293,24 @@ var getCategory = function( urlObj, options ){
 				var customer = data.value.customer;
 				var qty = data.value.qty;
 				var prodt = data.value.prodt;
+				var theme = (status === "OPEN" ) ? 'b' : 'a';
 				$(
-					'<li data-role="list-divider">' + 'Job #: ' + job + '<p class="ui-li-aside ui-li-desc">'+ "Status: " + status + '</p>' + '</li>' +
-					'<li>' +
-					'<p class="ui-li-aside ui-li-desc">'+ "Due: " + due + '</p>' +
-					'<p class="ui-li-desc">' + '<strong>' + " Customer: " + customer + '</strong>' + '</p>' +
+					'<li data-role="divider" id="jobDiv">' + 'Job #: ' + job  + '<span class="dividerMargin">'+ status + '</span>' + '<span class="dividerMargin">'+ "Due: " + due + '</span>' + '</li>'
+				).appendTo('#dataDisplayList').attr('data-theme', theme);
+				$(
+					'<li><a href=#data-item?item=' + data.id + '>' +
+					'<p class="ui-li-desc">' + '<strong>' + customer + '</strong>' + '</p>' +
 					'<p class="ui-li-desc">' + "Order Quantity: " + qty + '</p>' +
 					'<p class="ui-li-desc">' + " Est. Production Time: " + prodt + "hrs" + '</p>' +
-					'</li>'
-					).appendTo('#dataDisplayList');
+					'</a></li>'
+				).appendTo('#dataDisplayList');
 			});
 			$('#dataDisplayList').listview('refresh');
 		}
 	});
-
-	$('.delete').each(function(i){
-		this.key = keyArray[i];
-		$(this).on("click", deleteItem);
-	});
-
-	$('.edit').each(function(i){
-		this.key = keyArray[i];
-		$(this).on("click", editItem);
-	});
+	
 	if(categoryName === "Jobs"){
-		$("#all").hide();
+//		$("#all").hide();
 		$("#data-items").find("h1").html("All Jobs");
 	}else {
 		$("#all").show();
@@ -301,78 +344,92 @@ var jobCount = function (value){
 	
 };
 
-var saveData = function(key){
+var saveData = function(){
 	// Random key number for each job object
 	// Check to see if we are editing an existing item or it is a new item.
 	console.log("Start saveData");
-	console.log("saveData key:");
+	var docIdArr = urlVars("_");
+	console.log(docIdArr);
+	
 	
 	// Get all of the form data and create an object out of it
-	var jobFormData	= {};
-		jobFormData["Job Number"] 		= $("#jobnum").val();
-		jobFormData["Company"]	  		= $("#company").val();
-		jobFormData["Address"]			= $("#address").val();
-		jobFormData["City"]				= $("#city").val();
-		jobFormData["State"]			= $("#state").val();
-		jobFormData["Zipcode"]			= $("#zipcode").val();
-		jobFormData["Phone"]			= $("#phone").val();
-		jobFormData["Email"]			= $("#email").val();
-		jobFormData["Order Date"]		= $("#orderdate").val();
-		jobFormData["Need Date"]		= $("#needbydate").val();
-		jobFormData["Rush Order"]		= $('input:radio[name=rush]:checked').val();
-		jobFormData["Job Type"]			= $("#jobTypeList").val();
-		jobFormData["Custom Info"]		= $("#custom").val();
-		jobFormData["Quantity"]			= $("#qty").val();
-		jobFormData["Production Hours"]	= $("#production").val();
-		jobFormData["Design Effort"]	= $("#slider-fill").val();
+//	var jobFormData	= {};
+//		jobFormData["Job Number"] 		= $("#jobnum").val();
+//		jobFormData["Company"]	  		= $("#company").val();
+//		jobFormData["Address"]			= $("#address").val();
+//		jobFormData["City"]				= $("#city").val();
+//		jobFormData["State"]			= $("#state").val();
+//		jobFormData["Zipcode"]			= $("#zipcode").val();
+//		jobFormData["Phone"]			= $("#phone").val();
+//		jobFormData["Email"]			= $("#email").val();
+//		jobFormData["Order Date"]		= $("#orderdate").val();
+//		jobFormData["Need Date"]		= $("#needbydate").val();
+//		jobFormData["Rush Order"]		= $('input:radio[name=rush]:checked').val();
+//		jobFormData["Job Type"]			= $("#jobTypeList").val();
+//		jobFormData["Custom Info"]		= $("#custom").val();
+//		jobFormData["Quantity"]			= $("#qty").val();
+//		jobFormData["Production Hours"]	= $("#production").val();
+//		jobFormData["Design Effort"]	= $("#slider-fill").val();
 
 	console.log("End saveData");
 };
 
-var	deleteItem = function (){
-	var ask = confirm("Are you sure you want to delete this job?");
-	if(ask){
-		console.log(this.key);
-		localStorage.removeItem(this.key);
-		alert("Job was deleted!");
-		$(this).parents().filter('#jobUni').remove();
-		$( "#jobs" ).collapsibleset( "refresh" );
-	} else{
-		alert("Job was NOT deleted.");
-	}
+var	deleteItem = function (docId){
+	$.couch.db("jobapp").openDoc(docId, {
+		success: function(data) {
+			var re = /.*:/
+			rev = data._rev
+			jobNum = (data._id).replace(re, "");
+			var doc = {"_id": data._id, "_rev": data._rev};
+			var ask = confirm("Are you sure you want to delete job #:" + jobNum + " ?");
+			if(ask){
+				$.couch.db("jobapp").removeDoc(doc, {
+					success: function(data) {
+						console.log(data);
+						var begin = (data.id).indexOf(':') + 1;
+						var end = (data.id).lastIndexOf(':');
+						$.mobile.changePage("#data-items?category=" + (data.id).slice(begin,end));
+					}
+				});
+			} else{
+				alert("Job #:" + jobNum + " was NOT deleted.");
+			}
+		}
+	});
 };
 
-var editItem = function (){
-	// Grab the data from our item from local storage
-	var value = localStorage.getItem(this.key);
-	var jobFormData = JSON.parse(value);
-	console.log(value);
-	$.mobile.changePage( "#addItem");
-	$("#jobnum").val(jobFormData.jobNum[1]);
-	$("#company").val(jobFormData.company[1]);
-	$("#address").val(jobFormData.address[1]);
-	$("#city").val(jobFormData.city[1]);
-	$("#state").val(jobFormData.state[1]);
-	$("#zipcode").val(jobFormData.zipcode[1]);
-	$("#phone").val(jobFormData.phone[1]);
-	$("#email").val(jobFormData.email[1]);
-	$("#orderdate").val(jobFormData.oDate[1]);
-	$("#needbydate").val(jobFormData.needDate[1]);
-	$('input:radio[name=rush]:checked').val(jobFormData.rushOrder[1]);
-	$("#jobTypeList").val(jobFormData.jobType[1]);
-	$("#custom").val(jobFormData.customInfo[1]);
-	$("#qty").val(jobFormData.quantity[1]);
-	$("#production").val(jobFormData.prodHours[1]);
-	$("#slider-fill").val(jobFormData.designEff[1]);
-	$('select').selectmenu('refresh', true);
-	console.log("ran editItem");
-	
-	
-};
-					
-var clearLocal = function(){
-	localStorage.clear();
-	alert("All jobs deleted from local storage.");
+var editItem = function (docId){
+	console.log(docId);
+	$.couch.db("jobapp").openDoc(docId , {
+		success: function(data) {
+			console.log(data);
+			var rev = data._rev;
+			console.log(docId + rev);
+			var re = /.*:/
+			var jobNum = (data._id).replace(re, "");
+			var doc = {"_id": data._id, "_rev": data._rev}; 
+			console.log(jobNum);
+			$.mobile.changePage( "#addItem", {dataUrl: data._id + "_" + data._rev} );
+			$("#jobnum").val(jobNum);
+			$("#company").val(data.Company);
+			$("#address").val(data.Address);
+			$("#city").val(data.City);
+			$("#state").val(data.State);
+			$("#zipcode").val(data.Zipcode);
+			$("#phone").val(data.Phone);
+			$("#email").val(data.Email);
+			$("#orderdate").val((data["Order Date"]).join("-"));
+			$("#needbydate").val((data["Due Date"]).join("-"));
+			$('input:radio[name=rush]:checked').val(data["Rush Order"]);
+			$("#jobTypeList").val(data["Job Type"]);
+			$("#custom").val(data["Custom Info"]);
+			$("#qty").val(data.Quantity);
+			$("#production").val(data["Production Hours"]);
+			$("#slider-fill").val(data["Design Effort"]);
+			$('select').selectmenu('refresh', true);
+			console.log("ran editItem");
+		}
+	});
 };
 
 // Function I wrote to mimic my json data from a CSV file - returns an object of objects in this case
@@ -412,4 +469,4 @@ var csvToObject = function(data){
 		// console.log(values);
 		// console.log(obj);
 		return obj;
-};
+};;

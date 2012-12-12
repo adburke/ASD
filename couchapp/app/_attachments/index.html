@@ -19,8 +19,8 @@
 	<meta http-equiv="cleartype" content="on">
 	
 	<!-- StyleSheets under here -->
-	<!-- <link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" /> -->
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+	<link rel="stylesheet" href="jquery.mobile-1.2.0.min.css" /> 
+	<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" /> -->
 	<link rel="stylesheet" href="jqmstyles.css">
 	<!-- JavaScript is normally at the end of the body, except for Modernizr which enables HTML5 elements & feature detects -->
 	<script src="modernizr.custom.min.js"></script>
@@ -29,7 +29,7 @@
 	<body>
 		<div id="home" data-role="page" data-theme="d">
 
-			<div data-role="header" data-theme="b" data-position="fixed">
+			<div data-role="header" data-theme="b" data-position="fixed" id="mainHeader">
 				<img src="cta-small.png" alt="cta">
 				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>	
 			</div><!-- /header -->
@@ -47,19 +47,19 @@
 				</div>
 				<ul id="browse" data-role="listview" data-inset="true" data-theme="d" data-divider-theme="b">
 					<li data-role="list-divider">Browse By Job Type:</li>
-					<li id="mainBtn"><a href="#data-items?category=Banner"><h3>Banner</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Decal"><h3>Decal</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Sign"><h3>Sign</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Display"><h3>Display</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Poster"><h3>Poster</h3></a></li>
-					<li id="mainBtn"><a href="#data-items?category=Custom"><h3>Custom</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=banner"><h3>Banner</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=decal"><h3>Decal</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=sign"><h3>Sign</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=display"><h3>Display</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=poster"><h3>Poster</h3></a></li>
+					<li id="mainBtn"><a href="#data-items?category=custom"><h3>Custom</h3></a></li>
 				</ul>
 			</div><!-- /content -->
 
 			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<li><a href="#data-items?category=Jobs" data-icon="grid">All Jobs</a></li>
+						<li><a href="#data-items?category=jobs" data-icon="grid">All Jobs</a></li>
 						<li><a href="#addItem" data-icon="plus">New Job</a></li>
 					</ul>
 				</div>
@@ -82,21 +82,45 @@
   			<div data-role="content" id="dataDisplayMain">
   				<div data-role="controlgroup" data-type="horizontal" id="dataButtons">
 					<a href="" data-role="button" data-mini="true" id="all">All</a>
-					<a href="" data-role="button" data-mini="true" id="open">OPEN</a>
-					<a href="" data-role="button" data-mini="true" id="closed">CLOSED</a>
+					<a href="" data-role="button" data-mini="true" data-theme='b' id="open">OPEN</a>
+					<a href="" data-role="button" data-mini="true" data-theme='a' id="closed">CLOSED</a>
 				</div>	
-				<ul data-role="listview" data-inset=​"true" data-filter="true" id="dataDisplayList">​</ul>
+				<ul data-role="listview" data-inset="true" id="dataDisplayList">​</ul>
   			</div>
   			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<!-- <li><a href="#data-items?category=Jobs" data-icon="grid">All Jobs</a></li> -->
+						<!-- <li><a href="#data-items?category=jobs" data-icon="grid">All Jobs</a></li> -->
 						<li><a href="#addItem" data-icon="plus">New Job</a></li>
 					</ul>
 				</div>
 			</div><!-- /footer -->
-		</div><!-- data-items page --><!-- storage-items page -->
-
+		</div><!-- data-items page -->
+		
+		<div id="data-item" data-role="page" data-theme="d" data-add-back-btn="true">
+  			<div data-role="header" data-theme="b">
+  				<h1></h1>
+ 				<a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" class="ui-btn-right">Menu</a>
+  			</div>
+  			<div data-role="popup" id="popupMenu" data-theme="a" data-history="false">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="b">
+					<li data-role="divider" data-theme="a">Navigation</li>
+					<li><a href="#home">Index</a></li>
+					<li><a href="#addItem">New Job Form</a></li>					
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+  			<div data-role="content" id="jobDisplay"></div>
+  			<div data-role="footer" data-theme="a">
+				<div data-role="navbar" data-iconpos="top">
+					<ul>
+						<!-- <li><a href="#data-items?category=jobs" data-icon="grid">All Jobs</a></li> -->
+						<li><a href="#addItem" data-icon="plus">New Job</a></li>
+					</ul>
+				</div>
+			</div><!-- /footer -->
+		</div><!-- data-items page -->
+		
 		<div id="addItem" data-role="page" data-theme="d" data-add-back-btn="true">
 
 			<div data-role="header" data-theme="b" data-position="fixed">
@@ -205,7 +229,7 @@
 			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" id="addItemNav" data-iconpos="top">
 					<ul>
-						<li><a href="#data-items?category=Jobs" data-icon="grid">All Jobs</a></li>
+						<li><a href="#data-items?category=jobs" data-icon="grid">All Jobs</a></li>
 						<li><a href="#" id="clearData" data-icon="minus">Clear Data</a></li>
 					</ul>
 				</div>
@@ -242,8 +266,8 @@
 				</div>
   				<div class="ui-grid-a">
 					<div class="ui-block-a"><h1>WHO?</h1>Aaron Burke</div>
-					<div class="ui-block-b"><h1>WHAT?</h1>MIU Project</div>
-					<div class="ui-block-a"><h1>WHEN?</h1>10.2012</div>
+					<div class="ui-block-b"><h1>WHAT?</h1>ASD Project</div>
+					<div class="ui-block-a"><h1>WHEN?</h1>12.2012</div>
 					<div class="ui-block-b"><h1>WHY?</h1>Hey! Wait! What about where?</div>
 				</div><!-- /grid-b -->
   			</div>
@@ -251,17 +275,17 @@
   			<div data-role="footer" data-theme="a">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<li><a href="#data-items?category=Jobs" data-icon="grid">All Jobs</a></li>
+						<li><a href="#data-items?category=jobs" data-icon="grid">All Jobs</a></li>
 						<li><a href="#addItem" data-icon="plus">New Job</a></li>
 					</ul>
 				</div>
 			</div>
 		</div><!-- about page -->
 
-		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script> 
-		<!-- <script src="jquery-1.8.2.min.js"></script>
-		<script src="jquery.mobile-1.2.0.min.js"></script> -->
+		<!-- <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>  -->
+		<script src="jquery-1.8.2.min.js"></script>
+		<script src="jquery.mobile-1.2.0.min.js"></script>
 		<script src="jquery.validate.min.js"></script>
 		<script src="additional-methods.min.js"></script>
 		<script src="jquery.couch.js"></script>

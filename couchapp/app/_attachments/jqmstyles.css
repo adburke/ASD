@@ -10,17 +10,8 @@ label.error{
 div.ui-field-contain.ui-body.ui-br {
 	padding:10px;
 }
-#search {
-	padding-bottom: 0;
-	padding-top: 0;
-}
 div#cta {
-	width:320px;
-	margin: 0 auto;
-
-}
-div#dataButtons {
-	width:325px;
+	width:300px;
 	margin: 0 auto;
 }
 div.ui-content.ui-body-d img {
@@ -44,9 +35,7 @@ div#search.ui-content.ui-body-d {
 	padding:10px 20px;
 	margin-bottom:-15px;
 }
-/*div.ui-btn-inner.ui-li {
-	height:52px;
-}*/
+
 #mainBtn {
 	height:52px;
 }
@@ -76,4 +65,17 @@ div.ui-header.ui-bar-b img {
 	width: 100px;
 	margin: 0 auto;
 	margin-bottom: 10px;
+}
+div#dataButtons {
+	width:310px;
+	margin: 0 auto;
+}
+.dividerMargin {
+	float: right;
+	margin-left: 20px;
+	font-weight: normal;
+}
+li#jobDiv {
+	padding: .5em 15px;
+	font-size: 14px;
 }
