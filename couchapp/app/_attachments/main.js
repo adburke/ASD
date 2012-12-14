@@ -355,7 +355,7 @@ var docInsert = function (id,rev,nextJobNum,formData){
 			var order = (formData[8].value).split('-');
 			for(var i=0; i < order.length; i++) { order[i] = +order[i]; } 
 			var due = (formData[9].value).split('-');
-			for(var n=0; n < due.length; i++) { due[n] = +due[n]; }
+			for(var n=0; n < due.length; n++) { due[n] = +due[n]; }
 			var jobType = formData[12].value;
 			doc._id = "job:"+ jobType + ":" + nextJobNum;
 			doc["Job Number"] = nextJobNum;
@@ -378,17 +378,19 @@ var docInsert = function (id,rev,nextJobNum,formData){
 		} else {
 			// Editing existing document
 			var order = ($("#orderdate").val()).split('-');
+			for(var i=0; i < order.length; i++) { order[i] = +order[i]; } 
 			var due = ($("#needbydate").val()).split('-');
+			for(var n=0; n < due.length; n++) { due[n] = +due[n]; }
 			var jobType = $("#jobTypeList").val();
 			doc._id = id;
 			doc._rev = rev;
-			doc["Job Number"] = $("#jobnum").val();
-			doc.Status = $('input:radio[name=status]:checked').val();
+			doc["Job Number"] = Number($("#jobnum").val());
+			doc.Status = Number($('input:radio[name=status]:checked').val());
 			doc.Company = $("#company").val();
 			doc.Address = $("#address").val();
 			doc.City = $("#city").val();
 			doc.State = $("#state").val();
-			doc.Zipcode = $("#zipcode").val();
+			doc.Zipcode = Number($("#zipcode").val());
 			doc.Phone = $("#phone").val();
 			doc.Email = $("#email").val();
 			doc["Order Date"] = order;
@@ -396,9 +398,9 @@ var docInsert = function (id,rev,nextJobNum,formData){
 			doc["Rush Order"] = $('input:radio[name=rush]:checked').val();
 			doc["Job Type"] = jobType;
 			doc["Custom Info"] = $("#custom").val();
-			doc.Quantity = $("#qty").val();
-			doc["Production Hours"] = $("#production").val();
-			doc["Design Effort"] = $("#slider-fill").val();
+			doc.Quantity = Number($("#qty").val());
+			doc["Production Hours"] = Number($("#production").val());
+			doc["Design Effort"] = Number($("#slider-fill").val());
 		}
 	return doc;		
 };
@@ -416,6 +418,7 @@ var docCreate = function(formData){
 				console.log(nextJobNum);
 				var doc = docInsert(0,0,nextJobNum,formData);
 				console.log(doc);
+				docSave(doc);
 			}
 		});
 	} 
@@ -426,10 +429,11 @@ var docCreate = function(formData){
 		var id = docIdArr[0].substr(1);
 		var doc = docInsert(id,rev);
 		console.log(doc);
-//		docSave(doc);
-		$.mobile.changePage('#data-item?item=' + (docIdArr[0]).substr(1));
+		docSave(doc);
+		$.mobile.changePage('#data-item?item=' + (docIdArr[0]).substr(1), {changeHash: false});
 	}
 	console.log("End saveData");
+	$.mobile.changePage('#data-item?item=' + (doc._id), {changeHash: false});
 };
 
 var	deleteItem = function (docId){
