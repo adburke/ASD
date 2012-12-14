@@ -356,13 +356,17 @@ var docSave = function (doc){
 var docInsert = function (id,rev,nextJobNum,formData){
 	var doc = {};
 		if(id === 0 && rev === 0){
+			var type = formData[12].value
+			var typeSplit = type.split("");
+			typeSplit[0] = typeSplit[0].toLowerCase();
+			var typeLower = typeSplit.join("");
 			// New document 
 			var order = (formData[8].value).split('-');
 			for(var i=0; i < order.length; i++) { order[i] = +order[i]; } 
 			var due = (formData[9].value).split('-');
 			for(var n=0; n < due.length; n++) { due[n] = +due[n]; }
 			var jobType = formData[12].value;
-			doc._id = "job:"+ jobType + ":" + nextJobNum;
+			doc._id = "job:"+ typeLower + ":" + nextJobNum;
 			doc["Job Number"] = nextJobNum;
 			doc.Status = Number(formData[11].value);
 			doc.Company = formData[1].value;
