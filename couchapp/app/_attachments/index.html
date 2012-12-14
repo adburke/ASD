@@ -141,7 +141,7 @@
     				<li data-role="list-divider">Job Info</li>
     				<li style="padding:0;border:0;">
 					<fieldset>
-						<div data-role="fieldcontain">
+						<div data-role="fieldcontain" id="jobContain">
 							<label for="jobnum">Job #: <span>readonly</span></label><input type="text" id="jobnum" name="jobnum" readonly/>
 						</div>
 						<div data-role="fieldcontain">
@@ -180,11 +180,22 @@
 							<label for="needbydate">Due Date: <span>required</span></label><input type="date"  id="needbydate" name="needbydate" class="required date" required aria-required="true" placeholder="yyyy-mm-dd"/>
 						</div>
 						<div data-role="fieldcontain" >
-							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-								<div role ="heading">Rush Order?</div>
-									<label for="yes">Yes</label><input type="radio" value="Yes" id="yes" name="rush" class="radio" />
-									<label for="no">No</label><input type="radio" value="No" id="no" name="rush" class="radio" checked="checked"/>
-							</fieldset>
+							<div class='ui-grid-a'>
+								<div class='ui-block-a'>
+									<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+										<legend>Rush Order? <span>required</span></legend>
+										<label for="yes">Yes</label><input type="radio" value="Yes" id="yes" name="rush" class="radio" />
+										<label for="no">No</label><input type="radio" value="No" id="no" name="rush" class="radio" />
+									</fieldset>
+								</div>
+								<div class='ui-block-b'>
+									<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+										<legend>Status <span>required</span></legend>
+										<label for="open">Open</label><input type="radio" value=0 id="open" name="status" class="radio" />
+										<label for="closed">Closed</label><input type="radio" value=1 id="closed" name="status" class="radio" />
+									</fieldset>
+								</div>
+							</div>
 						</div>
 					</fieldset>
 				</ul>
@@ -230,7 +241,6 @@
 				<div data-role="navbar" id="addItemNav" data-iconpos="top">
 					<ul>
 						<li><a href="#data-items?category=jobs" data-icon="grid">All Jobs</a></li>
-						<li><a href="#" id="clearData" data-icon="minus">Clear Data</a></li>
 					</ul>
 				</div>
 			</div><!-- /footer -->

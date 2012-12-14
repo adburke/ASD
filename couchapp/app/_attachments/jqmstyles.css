@@ -79,3 +79,7 @@ li#jobDiv {
 	padding: .5em 15px;
 	font-size: 14px;
 }
+div.ui-controlgroup-label span {
+	color:#b3b3b3;
+	font-size: 13px;
+}

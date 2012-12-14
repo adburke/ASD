@@ -1,6 +1,6 @@
 function(doc) {
 	if ( doc._id.substr(0, 10) === "job:decal:" ) {
-		emit( [doc["Due Date"],doc.Status,doc["Job Number"]],{
+		emit( [doc["Job Number"],doc["Due Date"],doc.Status],{
 			"status": doc.Status,
 			"customer": doc["Company"],
 			"qty": doc["Quantity"],

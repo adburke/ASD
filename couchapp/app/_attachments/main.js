@@ -38,9 +38,9 @@ $('#data-items').on('pageshow', function(){
 				$('#dataDisplayList').empty();
 				$.each(data.rows, function(index, data) {
 					console.log(data);
-					var status = (data.key[1] === 0) ? "OPEN" : "CLOSED";
-					var due = (data.key[0]).join("/");
-					var job = data.key[2];
+					var status = (data.key[2] === 0) ? "OPEN" : "CLOSED";
+					var due = (data.key[1]).join("/");
+					var job = data.key[0];
 					var customer = data.value.customer;
 					var qty = data.value.qty;
 					var prodt = data.value.prodt;
@@ -122,8 +122,8 @@ $('#data-items').on('pageshow', function(){
 var urlVars = function(splitVal){
 	var urlData = $.mobile.path.parseUrl(window.location.href);
 	var type = urlData.hash.split(splitVal);
-	console.log(urlData);
-	console.log(type);
+//	console.log(urlData);
+//	console.log(type);
 	return type;
 }
 	
@@ -133,8 +133,8 @@ $('#addItem').on('pageinit', function(){
 	// 	debug: true,
 	// 	success: "valid"
 	// });;
-
 	// Injects current date as default for order date on form
+	$('#jobContain').hide();
 	var myDate = new Date();
     var month = myDate.getMonth() + 1;
     var dateVal = myDate.getFullYear() + '-' + month + '-' + myDate.getDate();
@@ -160,12 +160,12 @@ $('#addItem').on('pageinit', function(){
 		errorsLink = $("#errorsLink");
 	var validator = myForm.validate({
 		rules: {
-			"jobTypeList" : {
-				required: true
+			"select-choice-min" : {
+				required: true,
 			},
 			custom: {
 				required: function(element) {
-					return ($("#jobTypeList").val() === "Custom");
+					return ($("#select-choice-min").val() === "Custom");
 				}
 			},
 			qty: {
@@ -196,17 +196,14 @@ $('#addItem').on('pageinit', function(){
 			$("#formErrors ul").html(html);
 		},
 		submitHandler: function(form) {
-			saveData();
+			
+			docCreate(myForm.serializeArray());
 			form.reset();
+			$('#jobContain').hide();
+			$("#jobTypeList").val("").selectmenu('refresh'); 
 		}
 	});
-	// Have reset button clear red validation messages from form created var validator
-	// above to use for this
-	$(".reset").on('click',function() {
-		window.location.reload();
-	});
 	
-	//any other code needed for addItem page goes here
 
 
 });
@@ -248,7 +245,7 @@ var getItem = function ( urlObj, options ){
 			console.log(data);
 			
 			$(		'<div id=itemInfo>' +
-					'<p class="ui-li-aside ui-li-desc">'+ "Due: " + data["Due Date"] + '</p>' +
+					'<p class="ui-li-aside ui-li-desc">'+ "Due: " + data["Due Date"].join("/") + '</p>' +
 					'<p class="ui-li-desc">' + '<strong>' + data["Company"] + '</strong>' + '</p>' +
 					'<p class="ui-li-desc">' + "Order Quantity: " + data["Quantity"] + '</p>' +
 					'<p class="ui-li-desc">' + " Est. Production Time: " + data["Production Hours"] + "hrs" + '</p>' +
@@ -287,9 +284,9 @@ var getCategory = function( urlObj, options ){
 			$('#dataDisplayList').empty();
 			$.each(data.rows, function(index, data) {
 				console.log(data);
-				var status = (data.key[1] === 0) ? "OPEN" : "CLOSED";
-				var due = (data.key[0]).join("/");
-				var job = data.key[2];
+				var status = (data.key[2] === 0) ? "OPEN" : "CLOSED";
+				var due = (data.key[1]).join("/");
+				var job = data.key[0];
 				var customer = data.value.customer;
 				var qty = data.value.qty;
 				var prodt = data.value.prodt;
@@ -339,38 +336,99 @@ var getCategory = function( urlObj, options ){
 		$.mobile.changePage( $page, options );
 
 };
-
-var jobCount = function (value){
-	
+// Function saves the document provided by docCreate()
+var docSave = function (doc){
+	$.couch.db("jobapp").saveDoc(doc, {
+		success: function(data) {
+			console.log(data);
+		},
+		error: function(status) {
+			console.log(status);
+		}
+	});
+}
+// Function inserts data into a new document object and returns it to docCreate()
+var docInsert = function (id,rev,nextJobNum,formData){
+	var doc = {};
+		if(id === 0 && rev === 0){
+			// New document 
+			var order = (formData[8].value).split('-');
+			for(var i=0; i < order.length; i++) { order[i] = +order[i]; } 
+			var due = (formData[9].value).split('-');
+			for(var n=0; n < due.length; i++) { due[n] = +due[n]; }
+			var jobType = formData[12].value;
+			doc._id = "job:"+ jobType + ":" + nextJobNum;
+			doc["Job Number"] = nextJobNum;
+			doc.Status = Number(formData[11].value);
+			doc.Company = formData[1].value;
+			doc.Address = formData[2].value;
+			doc.City = formData[3].value;
+			doc.State = formData[4].value;
+			doc.Zipcode = Number(formData[5].value);
+			doc.Phone = formData[6].value;
+			doc.Email = formData[7].value;
+			doc["Order Date"] = order;
+			doc["Due Date"] = due;
+			doc["Rush Order"] = formData[10].value;
+			doc["Job Type"] = formData[12].value;
+			doc["Custom Info"] = formData[13].value;
+			doc.Quantity = Number(formData[14].value);
+			doc["Production Hours"] = Number(formData[15].value);
+			doc["Design Effort"] = Number(formData[16].value);
+		} else {
+			// Editing existing document
+			var order = ($("#orderdate").val()).split('-');
+			var due = ($("#needbydate").val()).split('-');
+			var jobType = $("#jobTypeList").val();
+			doc._id = id;
+			doc._rev = rev;
+			doc["Job Number"] = $("#jobnum").val();
+			doc.Status = $('input:radio[name=status]:checked').val();
+			doc.Company = $("#company").val();
+			doc.Address = $("#address").val();
+			doc.City = $("#city").val();
+			doc.State = $("#state").val();
+			doc.Zipcode = $("#zipcode").val();
+			doc.Phone = $("#phone").val();
+			doc.Email = $("#email").val();
+			doc["Order Date"] = order;
+			doc["Due Date"] = due;
+			doc["Rush Order"] = $('input:radio[name=rush]:checked').val();
+			doc["Job Type"] = jobType;
+			doc["Custom Info"] = $("#custom").val();
+			doc.Quantity = $("#qty").val();
+			doc["Production Hours"] = $("#production").val();
+			doc["Design Effort"] = $("#slider-fill").val();
+		}
+	return doc;		
 };
-
-var saveData = function(){
-	// Random key number for each job object
-	// Check to see if we are editing an existing item or it is a new item.
-	console.log("Start saveData");
+// Initializes the save document process 
+var docCreate = function(formData){
+	console.log("Start docCreate");
+	console.log(formData);
 	var docIdArr = urlVars("_");
-	console.log(docIdArr);
-	
-	
-	// Get all of the form data and create an object out of it
-//	var jobFormData	= {};
-//		jobFormData["Job Number"] 		= $("#jobnum").val();
-//		jobFormData["Company"]	  		= $("#company").val();
-//		jobFormData["Address"]			= $("#address").val();
-//		jobFormData["City"]				= $("#city").val();
-//		jobFormData["State"]			= $("#state").val();
-//		jobFormData["Zipcode"]			= $("#zipcode").val();
-//		jobFormData["Phone"]			= $("#phone").val();
-//		jobFormData["Email"]			= $("#email").val();
-//		jobFormData["Order Date"]		= $("#orderdate").val();
-//		jobFormData["Need Date"]		= $("#needbydate").val();
-//		jobFormData["Rush Order"]		= $('input:radio[name=rush]:checked').val();
-//		jobFormData["Job Type"]			= $("#jobTypeList").val();
-//		jobFormData["Custom Info"]		= $("#custom").val();
-//		jobFormData["Quantity"]			= $("#qty").val();
-//		jobFormData["Production Hours"]	= $("#production").val();
-//		jobFormData["Design Effort"]	= $("#slider-fill").val();
-
+	if (docIdArr[0] === "#addItem"){
+		$.couch.db('jobapp').view('app/all-jobs', {
+			success: function(data) {
+//				console.log(data);
+				var lastIndex = data.total_rows - 1;
+				nextJobNum = data.rows[lastIndex].key[0] + 1;
+				console.log(nextJobNum);
+				var doc = docInsert(0,0,nextJobNum,formData);
+				console.log(doc);
+			}
+		});
+	} 
+	else {
+		console.log(docIdArr);
+		console.log((docIdArr[0]).substr(1));
+		var rev = docIdArr[1];
+		var id = docIdArr[0].substr(1);
+		var doc = docInsert(id,rev);
+		console.log(doc);
+//		docSave(doc);
+		$.mobile.changePage('#data-item?item=' + (docIdArr[0]).substr(1));
+	}
 	console.log("End saveData");
 };
 
@@ -410,6 +468,7 @@ var editItem = function (docId){
 			var doc = {"_id": data._id, "_rev": data._rev}; 
 			console.log(jobNum);
 			$.mobile.changePage( "#addItem", {dataUrl: data._id + "_" + data._rev} );
+			$('#jobContain').show();
 			$("#jobnum").val(jobNum);
 			$("#company").val(data.Company);
 			$("#address").val(data.Address);
@@ -420,13 +479,26 @@ var editItem = function (docId){
 			$("#email").val(data.Email);
 			$("#orderdate").val((data["Order Date"]).join("-"));
 			$("#needbydate").val((data["Due Date"]).join("-"));
-			$('input:radio[name=rush]:checked').val(data["Rush Order"]);
 			$("#jobTypeList").val(data["Job Type"]);
 			$("#custom").val(data["Custom Info"]);
 			$("#qty").val(data.Quantity);
 			$("#production").val(data["Production Hours"]);
 			$("#slider-fill").val(data["Design Effort"]);
 			$('select').selectmenu('refresh', true);
+			if(data["Rush Order"] === "Yes"){
+				$('input:radio[value="Yes"]').prop("checked", true).checkboxradio("refresh");
+				$('input:radio[value="No"]').prop("checked", false).checkboxradio("refresh");
+			} else {
+				$('input:radio[value="Yes"]').prop("checked", false).checkboxradio("refresh");
+				$('input:radio[value="No"]').prop("checked", true).checkboxradio("refresh");
+			}
+			if(data.Status === 0){
+				$('input:radio[value=0]').prop("checked", true).checkboxradio("refresh");
+				$('input:radio[value=1]').prop("checked", false).checkboxradio("refresh");
+			} else {
+				$('input:radio[value=0]').prop("checked", false).checkboxradio("refresh");
+				$('input:radio[value=1]').prop("checked", true).checkboxradio("refresh");
+			}
 			console.log("ran editItem");
 		}
 	});
