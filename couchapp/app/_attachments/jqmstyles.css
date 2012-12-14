@@ -83,3 +83,6 @@ div.ui-controlgroup-label span {
 	color:#b3b3b3;
 	font-size: 13px;
 }
+div#itemInfo p {
+	font-size: 15px;
+}

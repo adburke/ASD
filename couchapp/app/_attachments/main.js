@@ -135,6 +135,8 @@ $('#addItem').on('pageinit', function(){
 	// });;
 	// Injects current date as default for order date on form
 	$('#jobContain').hide();
+	$('input:radio[value="No"]').prop("checked", true).checkboxradio("refresh");
+	$('input:radio[value=0]').prop("checked", true).checkboxradio("refresh");
 	var myDate = new Date();
     var month = myDate.getMonth() + 1;
     var dateVal = myDate.getFullYear() + '-' + month + '-' + myDate.getDate();
@@ -243,12 +245,15 @@ var getItem = function ( urlObj, options ){
 	$.couch.db('jobapp').openDoc(jobID, {
 		success: function(data) {
 			console.log(data);
-			
+			var status = (data.Status === 0) ? "OPEN" : "CLOSED";
 			$(		'<div id=itemInfo>' +
 					'<p class="ui-li-aside ui-li-desc">'+ "Due: " + data["Due Date"].join("/") + '</p>' +
 					'<p class="ui-li-desc">' + '<strong>' + data["Company"] + '</strong>' + '</p>' +
+					'<p class="ui-li-desc">' + " Job Type: " + data["Job Type"] + '</p>' +
 					'<p class="ui-li-desc">' + "Order Quantity: " + data["Quantity"] + '</p>' +
 					'<p class="ui-li-desc">' + " Est. Production Time: " + data["Production Hours"] + "hrs" + '</p>' +
+					'<p class="ui-li-desc">' + " Order Date: " + (data["Order Date"]).join("/") + '</p>' +
+					'<p class="ui-li-desc">' + " Status: " + status + '</p>' +
 					'</div>'
 				).appendTo('#jobDisplay');
 			$('#jobDisplay').find('#itemInfo');
@@ -419,6 +424,7 @@ var docCreate = function(formData){
 				var doc = docInsert(0,0,nextJobNum,formData);
 				console.log(doc);
 				docSave(doc);
+				$.mobile.changePage('#data-item?item=' + doc._id, {changeHash: false});
 			}
 		});
 	} 
@@ -433,7 +439,6 @@ var docCreate = function(formData){
 		$.mobile.changePage('#data-item?item=' + (docIdArr[0]).substr(1), {changeHash: false});
 	}
 	console.log("End saveData");
-	$.mobile.changePage('#data-item?item=' + (doc._id), {changeHash: false});
 };
 
 var	deleteItem = function (docId){
@@ -450,7 +455,11 @@ var	deleteItem = function (docId){
 						console.log(data);
 						var begin = (data.id).indexOf(':') + 1;
 						var end = (data.id).lastIndexOf(':');
-						$.mobile.changePage("#data-items?category=" + (data.id).slice(begin,end));
+						var type = (data.id).slice(begin,end);
+						var typeSplit = type.split("");
+						typeSplit[0] = typeSplit[0].toLowerCase();
+						var typeUrl = typeSplit.join("");
+						$.mobile.changePage("#data-items?category=" + typeUrl);
 					}
 				});
 			} else{
