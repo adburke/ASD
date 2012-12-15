@@ -67,12 +67,12 @@ div.ui-header.ui-bar-b img {
 	margin-bottom: 10px;
 }
 div#dataButtons {
-	width:310px;
+	width:320px;
 	margin: 0 auto;
 }
 .dividerMargin {
 	float: right;
-	margin-left: 20px;
+	margin-left: 10px;
 	font-weight: normal;
 }
 li#jobDiv {

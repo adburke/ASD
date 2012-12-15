@@ -311,12 +311,16 @@ var getCategory = function( urlObj, options ){
 		}
 	});
 	
-	if(categoryName === "Jobs"){
+	if(categoryName === "jobs"){
 //		$("#all").hide();
 		$("#data-items").find("h1").html("All Jobs");
 	}else {
 		$("#all").show();
-		$("#data-items").find("h1").html( categoryName + " Jobs");
+		var type = categoryName;
+		var typeSplit = type.split("");
+		typeSplit[0] = typeSplit[0].toUpperCase();
+		var typeLower = typeSplit.join("");
+		$("#data-items").find("h1").html( typeLower + " Jobs");
 	}
 		// Pages are lazily enhanced. We call page() on the page
 		// element to make sure it is always enhanced before we
